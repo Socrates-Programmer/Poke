@@ -1,0 +1,19 @@
+.layout{
+    margin-top:60px;
+    margin-left: 23%;
+    width: 60%;
+}
+
+.input{
+    margin:20px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    /* Otros estilos de tu elección */
+}
+
+.label{
+    color: rgba(0, 0, 0, 0.504);
+}
