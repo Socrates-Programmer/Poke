@@ -7,9 +7,15 @@ from werkzeug.exceptions import abort
 from app.poke import login_required
 from app.db import get_db
 
-bp = Blueprint('pokedex', __name__, url_prefix='/pokedex')
+bppoke = Blueprint('pokedex', __name__, url_prefix='/pokedex')
 
-@bp.route('/')
+@bppoke.route('/')
 @login_required
 def index():
     return render_template('menu/menu.html')
+
+@bppoke.route('/pokemones')
+@login_required
+def pokemones():
+    return render_template('menu/pokemones.html')
+

@@ -66,6 +66,10 @@ def signup():#REQUEST DE LOS INPUTS START///////////////////////////////////////
         elif not re.match("^[a-zA-Z\s]+$", lastname):
             error = 'lastname solo debe contener letras'
             return render_template('registros/signup.html', error=error)
+        
+        elif not re.match(r'^[^\'"=]*$', password):
+            error = 'lastname solo debe contener letras'
+            return render_template('registros/signup.html', error=error)
 
 #//////////////////////////////////////////////////////////////////////////////
         #VALIDACION DE RESGISTROS, PARA QUE NO SE TREPITAN
@@ -120,6 +124,14 @@ def login():
             error = 'La contraseña es requerida'
             return render_template('registros/login.html', error=error)
         
+        # Validar que name y lastname no contengan números ni caracteres especiales
+        
+        if not re.match(r'^[^\'"=]*$', password):
+            error = 'lastname solo debe contener letras'
+            return render_template('registros/signup.html', error=error)
+        
+        # Validar que name y lastname no contengan números ni caracteres especiales ENDS
+
         c.execute('SELECT * FROM users WHERE email = %s', (email,))
         user = c.fetchone()
 
@@ -159,6 +171,7 @@ def login_required(view):
         return view(**kwargs)
     
     return wrapped_view
+
 
 @bp.route('/logout')
 def logout():

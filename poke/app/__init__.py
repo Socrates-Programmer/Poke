@@ -14,15 +14,13 @@ def create_app():
     )
 
     from . import db
-
     db.init_app(app)
 
     from . import poke
-
     app.register_blueprint(poke.bp)
 
     from . import pokedex
-    app.register_blueprint(pokedex.bp, name='pokedex_blueprint')
+    app.register_blueprint(pokedex.bppoke, name='pokedex_blueprint')
 
 
     return app
