@@ -22,5 +22,7 @@ def create_app():
     from . import pokedex
     app.register_blueprint(pokedex.bppoke, name='pokedex_blueprint')
 
+    from . import perfil
+
 
     return app

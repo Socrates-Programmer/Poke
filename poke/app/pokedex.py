@@ -10,7 +10,6 @@ from app.db import get_db
 bppoke = Blueprint('pokedex', __name__, url_prefix='/pokedex')
 
 @bppoke.route('/')
-@login_required
 def index():
     return render_template('menu/menu.html')
 
