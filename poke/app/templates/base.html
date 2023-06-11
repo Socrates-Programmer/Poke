@@ -15,19 +15,20 @@
 
         <div class="">
             <div>
-                <header class="p-3 bg-dark text-white">
-                    <div class="container">
+                <header class="bg-dark text-white">
+                    <div class="" id="XDD">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                            <div class="img1">
+                                <a href="/" ><img  src="{{ url_for('static', filename='img/pokedex_logo.png') }}" alt="" class="imglogo"></a>
+                            </div>
 
                             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                                 <li><a href="/" class="nav-link px-2 text-secondary">Inicio</a></li>
                                 <li><a href="/pokedex/pokemones" class="nav-link px-2 text-white">Características</a></li>
                                 <li><a href="/pokedex" class="nav-link px-2 text-white">Pokedex</a></li>
                             </ul>
-                            <div class="">
-                                <a href="/" ><img  src="{{ url_for('static', filename='img/pokedex_logo.png') }}" alt="" class="imglogo"></a>
-                            </div>
                             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                                
                                 <input type="search" class="form-control form-control-dark" placeholder="Buscar..." aria-label="Buscar">
                             </form>
                             <div class="text-end">
@@ -47,8 +48,9 @@
                     </div>
                     </header>
             </div>
-
+<br>
         {% block head %}
+        <br>
             <h1>Hola mundo</h1>
         {% endblock %}
 

@@ -17,12 +17,13 @@
     <div class="col-2">
         <div class="">
                     
-              <div class="card" style="width: 18rem;">
+              <div class="card" style="width: 20rem;">
                 <img src="{{ url_for('static', filename='img/pikachu.png') }}" class="card-img-top" alt="...">
                 <div class="card-body">
                   <p class="text-center card-text">
-                    {{ nombre_usuario }}
+                    {{ nombre_usuario }} {{ apellido_usuario }}
                   </p>
+
                 </div>
               </div>
         
@@ -36,7 +37,7 @@
         
                 <div>
             
-                    <div class="container">
+                    <div class="">
                             <div class="layout">
                             {% if error %}
                         <div class="error-message">  
@@ -50,15 +51,22 @@
                             <div class="mb-3">
                                 <form method="POST" action="{{ url_for('perfil.perfil') }}" enctype="multipart/form-data">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                    <label for="formFile" class="form-label">Ejemplo de entrada de archivo predeterminado</label>
+                                    <label for="formFile" class="form-label">Cambiar Imagen</label>
                                     <input class="form-control" name="file" type="file" id="file">
                                     <br>
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                                        <input type="text" name="nameUser" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <input type="text" name="new_name" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+" /required>
                                         <div id="emailHelp" class="form-text">Escribe un nuevo nombre.</div>
                                     </div>
-                                    <input type="submit" class="btn btn-primary" value="Enviar">
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Apellido</label>
+                                        <input type="text" name="new_lastname" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+" /required>
+                                        <div id="emailHelp" class="form-text">Escribe un nuevo Apellido.</div>
+                                    </div>
+
+                                    <input type="submit" class="btn btn-primary" value="Cambiar">
 
                                     
                                 </form>

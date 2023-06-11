@@ -1,5 +1,4 @@
 .layout{
-    margin-top:60px;
     margin-left: 23%;
     width: 60%;
 }
@@ -18,7 +17,18 @@
     color: rgba(0, 0, 0, 0.504);
 }
 
+.img1{
+ padding-right: 2%;
+}
+
 .imglogo{
-    width: 50%;
-    margin-bottom: 1px;
+    width: 200px;
+    padding-top: 3%;
+}
+
+#XDD{
+    padding-left: 2%;
+    padding-right:2%;
+    padding-bottom: 1%;
+    padding-top: 1%;
 }
