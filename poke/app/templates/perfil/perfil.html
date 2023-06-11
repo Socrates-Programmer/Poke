@@ -20,7 +20,9 @@
               <div class="card" style="width: 18rem;">
                 <img src="{{ url_for('static', filename='img/pikachu.png') }}" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <p class="card-text">Un texto de ejemplo rápido para colocal cerca del título de la tarjeta y componer la mayor parte del contenido de la tarjeta.</p>
+                  <p class="text-center card-text">
+                    {{ nombre_usuario }}
+                  </p>
                 </div>
               </div>
         
@@ -46,12 +48,18 @@
                         <div class="container">
                         
                             <div class="mb-3">
-                                <form method="POST">
-                        
+                                <form method="POST" action="{{ url_for('perfil.perfil') }}" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <label for="formFile" class="form-label">Ejemplo de entrada de archivo predeterminado</label>
                                     <input class="form-control" name="file" type="file" id="file">
                                     <br>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                                        <input type="text" name="nameUser" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <div id="emailHelp" class="form-text">Escribe un nuevo nombre.</div>
+                                    </div>
                                     <input type="submit" class="btn btn-primary" value="Enviar">
+
                                     
                                 </form>
                             </div>

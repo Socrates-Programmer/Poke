@@ -19,6 +19,8 @@
   {% endif %}
 <form class="input" method = 'POST'>
 <div class="">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
       <div class="input">
           <label for="name">Name</label>
           <input name="name"type="text" class="form-control" id="name" placeholder="Name" maxlength="85" pattern="[A-Za-z\s]+" /required>
