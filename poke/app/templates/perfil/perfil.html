@@ -18,7 +18,11 @@
         <div class="container" id="pika">
                  <div class="container">
                     <div class="card p-3" style="width: 20rem;">
-                        <img src="{{ url_for('static', filename='img/pikachu.png') }}" class="card-img-top" alt="...">
+                        {% if imagen_base64 %}
+                        <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil">
+                    {% else %}
+                        <p>No se ha cargado ninguna imagen de perfil</p>
+                    {% endif %}
                         <div class="card-body">
                           <p class="text-center card-text">
                             {{ nombre_usuario }} {{ apellido_usuario }}
@@ -59,7 +63,6 @@
                                     <br>
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                         <input type="text" name="new_name" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+" /required>
                                         <div id="emailHelp" class="form-text">Escribe un nuevo nombre.</div>
                                     </div>

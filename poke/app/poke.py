@@ -1,9 +1,17 @@
-from flask import Blueprint, render_template, url_for, request, redirect, flash, session, g
+from flask import Blueprint, render_template, url_for, request, redirect, flash, session, g, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.db import get_db
 import re
 import functools
 
+import base64
+from flask import send_file
+
+
+from flask import Flask, render_template, request
+from werkzeug.utils import secure_filename
+from os import path
+import os
 
 """ 
 //////
@@ -18,12 +26,29 @@ tambien tenenmos a {from app.db import get_db}, esto es importando
 
 """
 
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Verificar si la carpeta de carga existe, si no, crearla
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 bp = Blueprint('pokedex', __name__, url_prefix='/')
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @bp.route('/', methods=['POST', 'GET'])
 def index():
-    return render_template('menu/index.html')
+    db, c = get_db()
+
+    user_id = g.user['id_user']
+    c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
+    image_data = c.fetchone()
+    imagen_path = image_data['imagen'] if image_data else None
+
+    return render_template('menu/index.html', imagen_path=imagen_path)
 
 """
 
@@ -177,3 +202,17 @@ def login_required(view):
 def logout():
     session.clear()
     return redirect(url_for('pokedex.index'))
+
+@bp.route('/imagen')
+@login_required
+def mostrar_imagen():
+    user_id = g.user['id_user']
+    db, c = get_db()
+    c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
+    image_data = c.fetchone()
+    imagen_path = image_data['imagen'] if image_data else None
+
+    if imagen_path:
+        return send_file(imagen_path)
+
+    return abort(404)
