@@ -20,6 +20,7 @@ tambien tenenmos a {from app.db import get_db}, esto es importando
 
 bp = Blueprint('pokedex', __name__, url_prefix='/')
 
+
 @bp.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('menu/index.html')
@@ -143,7 +144,6 @@ def login():
             return render_template('registros/login.html', error=error)
 
         if error is None:
-            session.clear()
             session['user_id'] = user['id_user']
             return redirect(url_for('pokedex.index'))
         

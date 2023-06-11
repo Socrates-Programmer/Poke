@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <h1>Esto es el perfil</h1>
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<div class="container mt-5">
+<div class="row">
+
+    <div class="col-1">
+        <div class="">
+                    
+              <div class="card" style="width: 18rem;">
+                <img src="{{ url_for('static', filename='img/pikachu.png') }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Un texto de ejemplo rápido para colocal cerca del título de la tarjeta y componer la mayor parte del contenido de la tarjeta.</p>
+                </div>
+              </div>
+        
+        </div>
+        </div>
+        
+        
+        <div class="col-11">
+        <div class="">
+            <div class="">
+        
+                <div>
+            
+                    <div class="container">
+                            <div class="layout">
+                            {% if error %}
+                        <div class="error-message">  
+                                {{error}}
+                        </div>
+                        
+                        {% endif %}
+                        
+                        <div class="container">
+                        
+                            <div class="mb-3">
+                                <form method="POST">
+                        
+                                    <label for="formFile" class="form-label">Ejemplo de entrada de archivo predeterminado</label>
+                                    <input class="form-control" name="file" type="file" id="file">
+                                    <br>
+                                    <input type="submit" class="btn btn-primary" value="Enviar">
+                                    
+                                </form>
+                            </div>
+                        </div>
+                
+                        </div>
+                
+                    </div>
+                
+                </div>
+            
+            </div>
+            
+        
+        
+        </div>
+        </div>
+        
+
+</div>
+
+</div>
+
+{% endblock %}

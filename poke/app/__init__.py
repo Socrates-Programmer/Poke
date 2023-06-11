@@ -1,5 +1,6 @@
 from flask import Flask
 import os
+from flask_wtf.csrf import CSRFProtect
 
 def create_app():
     app = Flask(__name__)
@@ -13,16 +14,21 @@ def create_app():
         DATABASE=os.environ.get('FLASK_DATABASE')
     )
 
+
+
     from . import db
     db.init_app(app)
 
     from . import poke
     app.register_blueprint(poke.bp)
+    csrf = CSRFProtect(app)
+    
 
     from . import pokedex
     app.register_blueprint(pokedex.bppoke, name='pokedex_blueprint')
 
     from . import perfil
+    app.register_blueprint(perfil.bpp)
 
 
     return app
