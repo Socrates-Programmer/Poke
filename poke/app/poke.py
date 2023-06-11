@@ -41,14 +41,9 @@ def allowed_file(filename):
 
 @bp.route('/', methods=['POST', 'GET'])
 def index():
-    db, c = get_db()
 
-    user_id = g.user['id_user']
-    c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
-    image_data = c.fetchone()
-    imagen_path = image_data['imagen'] if image_data else None
+    return render_template('menu/index.html')
 
-    return render_template('menu/index.html', imagen_path=imagen_path)
 
 """
 
@@ -132,6 +127,7 @@ def signup():#REQUEST DE LOS INPUTS START///////////////////////////////////////
 #INSERTAR TADOS A LA BASE DE DATOS END/////////////////////////////////////////////////////////
 
     return render_template('registros/signup.html', error=error)
+
 
 @bp.route('/login', methods=['POST', 'GET'])
 def login():

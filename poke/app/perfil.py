@@ -109,6 +109,7 @@ def perfil():
 
     return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
 
+
 # ...
 
 
