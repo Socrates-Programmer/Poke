@@ -23,7 +23,6 @@
   {% endif %}
         <form method="POST">
             <div class="mb-3 input">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
               <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" /required>
               <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>

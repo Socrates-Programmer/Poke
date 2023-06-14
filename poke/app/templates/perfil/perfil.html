@@ -54,21 +54,31 @@
                         {% endif %}
                         
                         <div class="container">
-                        
+
                             <div class="mb-3">
-                                <form method="POST" action="{{ url_for('perfil.perfil') }}" enctype="multipart/form-data">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <form method="POST" action="{{ url_for('perfil.upload') }}" enctype="multipart/form-data">
                                     <label for="formFile" class="form-label">Cambiar Imagen</label>
                                     <input class="form-control" name="file" type="file" id="file">
                                     <br>
+
+                                    <input type="submit" class="btn btn-primary" value="Cambiar">
+
+                                    
+                                </form>
+                            </div>
+
+                        
+                            <div class="mb-3">
+                                <form method="POST" action="{{ url_for('perfil.perfil') }}" enctype="multipart/form-data">
+                                    
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                                        <input type="text" name="new_name" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+" /required>
+                                        <input type="text" name="new_name" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+" >
                                         <div id="emailHelp" class="form-text">Escribe un nuevo nombre.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Apellido</label>
-                                        <input type="text" name="new_lastname" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+" /required>
+                                        <input type="text" name="new_lastname" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" pattern="[A-Za-z\s]+">
                                         <div id="emailHelp" class="form-text">Escribe un nuevo Apellido.</div>
                                     </div>
 

@@ -38,21 +38,18 @@ bpp = Blueprint('perfil', __name__, url_prefix='/perfil', static_folder='static'
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@login_required
 @bpp.route('/', methods=["GET", "POST"])
 @login_required
 def perfil():
     db, c = get_db()
     error = None
-
-    # Obtener el nombre del usuario de la base de datos
+#Obtener el nombre del usuario de la base de datos
     user_id = g.user['id_user']
     c.execute('SELECT name FROM users WHERE id_user = %s', (user_id,))
     user = c.fetchone()
     nombre_usuario = user['name'] if user else None
     
-    last_id = g.user['id_user']
-    c.execute('SELECT last_name FROM users WHERE id_user = %s', (last_id,))
+    c.execute('SELECT last_name FROM users WHERE id_user = %s', (user_id,))
     last = c.fetchone()
     apellido_usuario = last['last_name'] if last else None
 
@@ -60,42 +57,24 @@ def perfil():
     image_data = c.fetchone()
     imagen_path = image_data['imagen'] if image_data else None
 
+#Obtener el nombre del usuario de la base de datos////
+    # Antes del bloque if request.method == 'POST'
+    imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
+
+# Obtener el Nombre, Apellido y foto de perfil del usuario de la base de datos 
     if request.method == 'POST':
         new_name = request.form['new_name']
         new_lastname = request.form['new_lastname']
-        file = request.files['file']
 
-        if not file:
-            error = 'File es requerido'
-            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_path=imagen_path, error=error)
 
-        if not new_name:
-            error = 'El nombre es requerido'
-            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_path=imagen_path, error=error)
-
-        if not new_lastname:
-            error = 'El apellido es requerido'
-            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_path=imagen_path, error=error)
-
-        # Validar que name y lastname no contengan números ni caracteres especiales
-        if not re.match("^[a-zA-Z\s]+$", new_name):
-            error = 'El nombre solo debe contener letras'
-            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_path=imagen_path, error=error)
+        if not new_name or not new_lastname:
+            error = 'Los campos de Nombre y Apellido son requeridos.'
+            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
+        else:
+            validar(new_name, new_lastname, nombre_usuario, apellido_usuario, imagen_base64)        # Validar que name y lastname no contengan números ni caracteres especiales
         
-        if not re.match("^[a-zA-Z\s]+$", new_lastname):
-            error = 'El apellido solo debe contener letras'
-          
-            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_path=imagen_path, error=error)
+        if not error:
         
-        if file and allowed_file(file.filename):
-            image_data = file.read()
-
-            # Guardar la imagen en la base de datos
-            cursor = db.cursor()
-            cursor.execute("UPDATE users SET imagen = %s WHERE id_user = %s", (image_data, user_id))
-            db.commit()
-
-
             c.execute("UPDATE users SET name = %s, last_name = %s WHERE id_user = %s", (new_name, new_lastname, user_id))
             db.commit()
 
@@ -117,36 +96,48 @@ def perfil():
 @login_required
 def upload():
     db, c = get_db()
-
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No se seleccionó ningún archivo')
-            return redirect(request.url)
-        
-        file = request.files['file']
-        
-        if file.filename == '':
-            flash('No se seleccionó ningún archivo')
-            return redirect(request.url)
-        
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(file_path)
-            
-            # Guardar la información del archivo en la base de datos
-            cursor = db.cursor()
-            with open(file_path, 'rb') as f:
-                file_data = f.read()
-                cursor.execute("INSERT INTO users (imagen) VALUES (%s)", (file_data,))
-                db.commit()
-            
-            flash('Archivo subido exitosamente')
-            return redirect(url_for('perfil.perfil'))
-        
-        flash('Tipo de archivo no permitido')
-        return redirect(request.url)
+    error = None
+    #Obtener el nombre del usuario de la base de datos
+    user_id = g.user['id_user']
+    c.execute('SELECT name FROM users WHERE id_user = %s', (user_id,))
+    user = c.fetchone()
+    nombre_usuario = user['name'] if user else None
     
+    c.execute('SELECT last_name FROM users WHERE id_user = %s', (user_id,))
+    last = c.fetchone()
+    apellido_usuario = last['last_name'] if last else None
+
+    c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
+    image_data = c.fetchone()
+    imagen_path = image_data['imagen'] if image_data else None
+
+#Obtener el nombre del usuario de la base de datos////
+    # Antes del bloque if request.method == 'POST'
+    imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
+    if request.method == 'POST':
+        file = request.files['file']
+        user_id = g.user['id_user']
+
+        if not file:
+            error = 'File es requerido'
+            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
+       
+        elif file and allowed_file(file.filename):
+            image_data = file.read()
+            # Resto del código...
+
+            # Guardar la imagen en la base de datos
+            cursor = db.cursor()
+            cursor.execute("UPDATE users SET imagen = %s WHERE id_user = %s", (image_data, user_id))
+            db.commit()
+      
+
+        flash('Se ha actualizado el nombre correctamente')
+
+        return redirect(url_for('perfil.perfil'))
+
+    # Convertir los datos de la imagen a una cadena base64
+
     return render_template('perfil/perfil.html')
 
 
@@ -177,3 +168,12 @@ def mostrar_imagen():
 
     return abort(404)
 
+
+def validar(new_name, new_lastname, nombre_usuario, apellido_usuario, imagen_base64):
+    if not re.match("^[a-zA-Z\s]+$", new_name):
+        error = 'El nombre solo debe contener letras'
+        return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
+    
+    if not re.match("^[a-zA-Z\s]+$", new_lastname):
+        error = 'El apellido solo debe contener letras'
+        return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
