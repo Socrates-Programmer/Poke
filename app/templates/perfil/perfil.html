@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<div class="">
+<div class="row">
+
+    <div class="col-3">
+        
+        <div class="container" id="pika">
+
+                 <div class="container">
+
+                    <div class="card p-3" style="width: 20rem;">
+                        <h1 class="text-center">Imagen</h1>
+
+                    {% if imagen_base64 %}
+                        <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil">
+                    {% else %}
+                        <p>ninguna imagen de perfil</p>
+                    {% endif %}
+                        <div class="card-body">
+                          <p class="text-center card-text">
+                            {{ nombre_usuario }} {{ apellido_usuario }}
+                          </p>
+                        </div>
+                      </div>
+                 </div>   
+        </div>
+        </div>
+        
+        
+        <div class="col-9">
+        <div class="">
+            <div class="">
+        
+                <div>
+            
+                    <div class="">
+                            <div class="layout">
+                            {% if error %}
+                        <div class="error-message">  
+                                {{error}}
+                        </div>
+                        
+                        {% endif %}
+                        
+                        <div class="container">
+
+                            <div class="mb-3">
+                                <form method="POST" action="{{ url_for('perfil.upload') }}" enctype="multipart/form-data">
+                                    <label for="formFile" class="form-label">Cambiar Imagen</label>
+                                    <input class="form-control" name="file" type="file" id="file">
+                                    <br>
+
+                                    <input type="submit" class="btn btn-primary" value="Cambiar">
+
+                                    
+                                </form>
+                            </div>
+
+                        
+                            <div class="mb-3">
+                                <form method="POST" action="{{ url_for('perfil.perfil') }}" enctype="multipart/form-data">
+                                    
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                                        <input type="text" name="new_name" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" maxlength="85" pattern="[A-Za-z\s]+" >
+                                        <div id="emailHelp" class="form-text">Escribe un nuevo nombre.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Apellido</label>
+                                        <input type="text" name="new_lastname" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" maxlength="85" pattern="[A-Za-z\s]+">
+                                        <div id="emailHelp" class="form-text">Escribe un nuevo Apellido.</div>
+                                    </div>
+
+                                    <input type="submit" class="btn btn-primary" value="Cambiar">
+
+                                    
+                                </form>
+                            </div>
+                        </div>
+                
+                        </div>
+                
+                    </div>
+                
+                </div>
+            
+            </div>
+            
+        
+        
+        </div>
+        </div>
+        
+
+</div>
+
+</div>
+
+{% endblock %}

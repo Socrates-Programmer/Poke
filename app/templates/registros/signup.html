@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Signup
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+<div class="layout">
+        {% if error %}
+<div class="error-message">  
+        {{error}}
+</div>
+ 
+  {% endif %}
+<form class="input" method = 'POST'>
+<div class="">
+
+      <div class="input">
+          <label for="name">Name</label>
+          <input name="name"type="text" class="form-control" id="name" placeholder="Name" maxlength="85" pattern="[A-Za-z\s]+">
+          <label for="" class="label">No se permiten caracteres espaciales</label>
+
+        </div>    
+      <div class="input">
+        <label for="last">Last Name</label>
+        <input name="lastname" type="text" class="form-control" id="last" placeholder="Last Name" maxlength="36" pattern="[A-Za-z\s]+" >
+        <label for="" class="label">No se permiten caracteres espaciales</label>
+
+      </div>    
+      <div class="input">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" id="email" placeholder="Email" maxlength="90">
+        <label for="" class="label">Recuerde poner un Email valido, Ejem: Example@gmail.com</label>
+
+      </div>
+      <div class="input">
+        <label for="password">Password</label>
+        <input name="password" type="password" class="form-control" id="password" placeholder="Password" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" >
+        <label for="" class="label">Por lo menos un numero y una mayucula son requiridos.</label>
+      </div>
+  </div>
+    <div class="form-group input">
+    </div>
+    <div class="input">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+</form>
+    
+</div>
+</div>
+{% endblock %}
+
+
+

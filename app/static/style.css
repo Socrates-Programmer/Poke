@@ -1,0 +1,38 @@
+.layout{
+    margin-left: 23%;
+    width: 60%;
+}
+
+.input{
+    margin:20px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    /* Otros estilos de tu elección */
+}
+
+.label{
+    color: rgba(0, 0, 0, 0.504);
+}
+
+.img1{
+ padding-right: 2%;
+}
+
+.imglogo{
+    width: 200px;
+    padding-top: 3%;
+}
+
+#XDD{
+    padding-left: 2%;
+    padding-right:2%;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
+
+.pika{
+
+}

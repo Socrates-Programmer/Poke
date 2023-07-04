@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    ALL POKEMONS
+{% endblock %}
+
+{% block head %}
+    
+{% endblock %}
+
+{% block body %}
+<div>
+ <ol>
+    {% for pokemon in pokemons %}
+    <li>
+        {{ pokemon.name }}
+    </li>
+    {% endfor %}
+ </ol>
+</div>
+{% endblock %}

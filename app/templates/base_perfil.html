@@ -1,0 +1,19 @@
+
+
+<div class="dropdown text-end" title="">
+    <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false" >    
+    {% if imagen_base64 %}
+        <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil" alt="" width="35" height="35" class="rounded-circle">
+    {% else %}
+        <p>No se ha cargado ninguna imagen de perfil</p>
+    {% endif %}
+
+</a>
+    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+    <li><a class="dropdown-item" href="#">Nuevo proyecto...</a></li>
+    <li><a class="dropdown-item" href="#">Configuración</a></li>
+    <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+    </ul>
+    </div>

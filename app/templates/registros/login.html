@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block head %}
+    
+{% endblock %}
+
+
+{% block body %}
+
+
+
+<div class="container">
+    <div class="layout">
+      {% if error %}
+<div class="error-message">  
+        {{error}}
+</div>
+ 
+  {% endif %}
+        <form method="POST">
+            <div class="mb-3 input">
+              <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
+              <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" /required>
+              <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
+            </div>
+            <div class="input">
+                <label for="password">Password</label>
+                <input name="password" type="password" class="form-control" id="password" placeholder="Password" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" /required>
+                <label for="" class="label">Por lo menos un numero y una mayucula son requiridos.</label>
+              </div>
+              <div class="mb-3 form-check input">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Verificado</label>
+            </div>
+            <div class="input">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+          </form>    
+    </div>
+</div>
+
+{% endblock %}
