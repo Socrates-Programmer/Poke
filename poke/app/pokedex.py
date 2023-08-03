@@ -49,20 +49,29 @@ def index():
         return f'Error en la solicitud: {e}'
 
 
-@bppoke.route('/pokemones')
+@bppoke.route('/friends')
 @login_required
 def pokemones():
     db, c = get_db()
-    #Obtener el nombre del usuario de la base de datos
+
+    # Obtener el nombre del usuario de la base de datos
     user_id = g.user['id_user']
+    c.execute("SELECT name, last_name from users")
+    all_users = c.fetchall()
+    names_list = [{'name': user['name'], 'last_name': user['last_name']} for user in all_users]
+    
+    # Obtener la imagen del usuario de la base de datos
     c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
     image_data = c.fetchone()
     imagen_path = image_data['imagen'] if image_data else None
+
     #Obtener el nombre del usuario de la base de datos////
 # Antes del bloque if request.method == 'POST'
     imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
-    return render_template('menus/pokemones.html', imagen_base64=imagen_base64 if session else None)
+
+
+    return render_template('menus/friends.html', imagen_base64=imagen_base64 if session else None, friends = names_list)
 
 
 pokemon_name = "pikachu"

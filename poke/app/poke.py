@@ -206,6 +206,12 @@ def load_logged_in_user():
         c.execute('SELECT * FROM users WHERE id_user = %s', (user_id,))
         g.user = c.fetchone()
 
+#el decorador login_required se utiliza para proteger 
+# ciertas vistas o funciones de una aplicación web para 
+# asegurarse de que el usuario haya iniciado sesión antes de acceder a ellas.
+
+
+
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):

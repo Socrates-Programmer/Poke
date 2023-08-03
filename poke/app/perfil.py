@@ -130,8 +130,7 @@ def upload():
             cursor = db.cursor()
             cursor.execute("UPDATE users SET imagen = %s WHERE id_user = %s", (image_data, user_id))
             db.commit()
-      
-
+            
         flash('Se ha actualizado el nombre correctamente')
 
         return redirect(url_for('perfil.perfil'))

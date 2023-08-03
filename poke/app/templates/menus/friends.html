@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Pokemones
+{% endblock %}
+
+{% block head %}
+
+<h1>Personas registradas:</h1>
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div>
+            <ol>
+                <form action="/enviar_solicitud_amistad" method="post">
+
+                {% for user in friends %}
+                <li>{{ user['name'] }} {{ user['last_name'] }}</li>
+
+                <div class="">        
+                    {% if not POST %}
+
+                    <!-- Formulario de solicitud de amistad -->
+                        <!-- Aquí van los campos del formulario, como el ID del receptor, etc. -->
+                        <input type="submit" name="accion" value="enviar solicitud">
+                    </form>                    
+        
+                    {% else %}
+                        Ya se leenvio la solicitud
+                    {% endif %}
+                    <br>
+                    <br>
+
+                    {% endfor %}
+
+
+                </div>
+
+            </ol>
+        </div>
+
+    </div>
+{% endblock %}
