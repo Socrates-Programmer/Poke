@@ -44,13 +44,14 @@ def index():
 
     db, c = get_db()
     #Obtener el nombre del usuario de la base de datos
-    user_id = g.user['id_user']
-    c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
-    image_data = c.fetchone()
-    imagen_path = image_data['imagen'] if image_data else None
-    #Obtener el nombre del usuario de la base de datos////
-# Antes del bloque if request.method == 'POST'
-    imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
+    if session:
+        user_id = g.user['id_user']
+        c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
+        image_data = c.fetchone()
+        imagen_path = image_data['imagen'] if image_data else None
+        #Obtener el nombre del usuario de la base de datos////
+    # Antes del bloque if request.method == 'POST'
+        imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
     return render_template('menus/index.html', imagen_base64=imagen_base64 if session else None)
 
