@@ -207,12 +207,11 @@ def load_logged_in_user():
         c.execute('SELECT * FROM users WHERE id_user = %s', (user_id,))
         g.user = c.fetchone()
 
+
+
 #el decorador login_required se utiliza para proteger 
 # ciertas vistas o funciones de una aplicación web para 
 # asegurarse de que el usuario haya iniciado sesión antes de acceder a ellas.
-
-
-
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -228,70 +227,3 @@ def login_required(view):
 def logout():
     session.clear()
     return redirect(url_for('pokedex.index'))
-
-def mostrar_imagen():
-    db, c = get_db()
-    error = None
-    #Obtener el nombre del usuario de la base de datos
-    user_id = g.user['id_user']
-    c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
-    image_data = c.fetchone()
-    imagen_path = image_data['imagen'] if image_data else None
-    #Obtener el nombre del usuario de la base de datos////
-# Antes del bloque if request.method == 'POST'
-    imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
-
-    return render_template('menus/index.html', imagen_base64=imagen_base64 if session else None)
-
-
-
-#def validacion_nombre():
-#    if user is not None:
-#       error = 'El usuario {} ya está registrado.'.format(name)
-        #VALIDACION DE RESGISTROS, PARA QUE NO SE TREPITAN
-        #START
-#        c.execute('SELECT id_user FROM users WHERE name = %s', (name,))
-#        user = c.fetchone()
-        # Leer y descartar los resultados de la consulta anterior
-#       c.fetchall()
-
-
-
-#//////////////////////////FUNCION DE REQUERIMIENTOS DE CAMPOS////////////////////
-def campos_requeridos(name, lastname, email, password):
-
-        if not name:
-            error = 'name es requerido'
-            return redirect(url_for('pokedex.signup'))
-
-        if not lastname:
-            error = 'lastname es requerido'
-            return redirect(url_for('pokedex.signup'))
-
-        if not email:
-            error = 'email es requerido'
-            return redirect(url_for('pokedex.signup'))
-
-        if not password:
-            error = 'password es requerido'
-            return redirect(url_for('pokedex.signup'))
-#//////////////////////////FUNCION DE REQUERIMIENTOS DE CAMPOS////////////////////ENDS
-
-
-
-#///////////////////////////FUNCION DE VALIDACION DE CARACTERES ESPACIALES///////////////////
-def validacion_de_caracteres(name, lastname, password): 
-    if not re.match("^[a-zA-Z\s]+$", name):
-        error = 'name solo debe contener letras.'
-        return redirect(url_for('pokedex.signup'))
-    
-    elif not re.match("^[a-zA-Z\s]+$", lastname):
-        error = 'lastname solo debe contener letras.'
-        return redirect(url_for('pokedex.signup'))
-    
-    elif not re.match(r'^[^\'"=]*$', password):
-        error = 'Password no puede contener: Guiones, comullas y signo de igual.'
-        return redirect(url_for('pokedex.signup'))
-#///////////////////////////FUNCION DE VALIDACION DE CARACTERES ESPACIALES///////////////////ENDS
-
-

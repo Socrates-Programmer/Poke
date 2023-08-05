@@ -14,6 +14,11 @@
     {% for pokemon in pokemons %}
     <li>
         {{ pokemon.name }}
+        {% if pokemon.image_url %}
+            <img src="{{ pokemon.image_url }}" alt="{{ pokemon.name }} Image">
+        {% else %}
+            <p>No image available</p>
+        {% endif %}
     </li>
     {% endfor %}
  </ol>

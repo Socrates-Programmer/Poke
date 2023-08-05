@@ -6,8 +6,9 @@ from werkzeug.exceptions import abort
 import requests
 from app.poke import login_required
 from app.db import get_db
-from app.poke import mostrar_imagen
 import base64
+import requests
+
 
 bppoke = Blueprint('pokedex', __name__, url_prefix='/pokedex')
 
@@ -29,12 +30,15 @@ def index():
     # Antes del bloque if request.method == 'POST'
         imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
+    class Pokemon:
+        def __init__(self, name, image_url):
+            self.name = name
+            self.image_url = image_url
 
-    url = 'https://pokeapi.co/api/v2/pokemon?limit=5'
+    url = 'https://pokeapi.co/api/v2/pokemon?limit=12'
     try:
         response = requests.get(url)
         response.raise_for_status()
-
         data = response.json()
         results = data.get('results', [])
         pokemons = []
@@ -42,6 +46,7 @@ def index():
             name = result['name']
             pokemon_url = result['url']
             pokemon_data = requests.get(pokemon_url).json()
+            image_url = pokemon_data['sprites']['front_default']
             pokemons.append(Pokemon(name, image_url))
             print(name)
         return render_template('menus/pokedex.html', pokemons=pokemons, imagen_base64=imagen_base64 if session else None)
