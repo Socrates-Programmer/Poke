@@ -18,7 +18,7 @@ class Pokemon:
 
 @bppoke.route('/')
 def index():
-    if session:
+    if 'user' in g and g.user is not None:
         db, c = get_db()
         #Obtener el nombre del usuario de la base de datos
         user_id = g.user['id_user']

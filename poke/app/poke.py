@@ -41,20 +41,21 @@ def allowed_file(filename):
 
 @bp.route('/', methods=['POST', 'GET'])
 def index():
-
     db, c = get_db()
-    #Obtener el nombre del usuario de la base de datos
-    if session:
+
+    # Obtener el nombre del usuario de la base de datos
+    if 'user' in g and g.user is not None:
         user_id = g.user['id_user']
         c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
         image_data = c.fetchone()
         imagen_path = image_data['imagen'] if image_data else None
-        #Obtener el nombre del usuario de la base de datos////
-    # Antes del bloque if request.method == 'POST'
-        imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
+    else:
+        imagen_path = None
 
-    return render_template('menus/index.html', imagen_base64=imagen_base64 if session else None)
+    # Antes del bloque if request.method == 'POST':
+    imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
+    return render_template('menus/index.html', imagen_base64=imagen_base64 if 'user' in g and g.user else None)
 
 """
 
@@ -67,7 +68,7 @@ def signup():
     db, c = get_db()
     error = None
 
-    if session:
+    if 'user' in g and g.user is not None:
         db, c = get_db()
         #Obtener el nombre del usuario de la base de datos
         user_id = g.user['id_user']
@@ -147,7 +148,7 @@ def signup():
 
 @bp.route('/login', methods=['POST', 'GET'])
 def login():
-    if session:
+    if 'user' in g and g.user is not None:
         db, c = get_db()
         #Obtener el nombre del usuario de la base de datos
         user_id = g.user['id_user']
@@ -228,8 +229,6 @@ def logout():
     session.clear()
     return redirect(url_for('pokedex.index'))
 
-@bp.route('/imagen')
-@login_required
 def mostrar_imagen():
     db, c = get_db()
     error = None

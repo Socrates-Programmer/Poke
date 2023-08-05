@@ -18,7 +18,7 @@
                 <form action="/enviar_solicitud_amistad" method="post">
 
                 {% for user in friends %}
-                <li>{{ user['name'] }} {{ user['last_name'] }}</li>
+                <li>{{ user['name'] }}, {{ user['last_name'] }}</li>
 
                 <div class="">        
                     {% if not POST %}
