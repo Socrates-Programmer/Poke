@@ -10,17 +10,24 @@
 
 {% block body %}
 <div>
- <ol>
-    {% for pokemon in pokemons %}
+    
+  {% for pokemon in pokemons %}
+ <ul>
     <li>
-        {{ pokemon.name }}
-        {% if pokemon.image_url %}
-            <img src="{{ pokemon.image_url }}" alt="{{ pokemon.name }} Image">
-        {% else %}
+        <div class="card" style="width: 18rem;">
+            {% if pokemon.image_url %}
+            <img src="{{ pokemon.image_url }}" class="card-img-top" alt="{{ pokemon.name }} Image">
+            {% else %}
             <p>No image available</p>
-        {% endif %}
+            {% endif %}
+            <div class="card-body">
+              <p class="card-text">{{ pokemon.name }}
+            </p>
+            </div>
+          </div>
     </li>
-    {% endfor %}
- </ol>
+ </ul>
+ {% endfor %}
+
 </div>
 {% endblock %}
