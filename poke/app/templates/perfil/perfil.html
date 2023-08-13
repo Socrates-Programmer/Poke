@@ -2,8 +2,6 @@
 
 {% block head %}
 
-    <h1>Esto es el perfil</h1>
-
 {% endblock %}
 
 
@@ -11,41 +9,37 @@
 {% block body %}
 
 
-<div class="">
-<div class="row">
+<div class="container px-4">
+<div class="container row gx-5">
+    <div class="col">
+        <div class="p-3" id="pika">
+            <div class="" style="width: 20rem;">
 
-    <div class="col-3">
-        <div class="container" id="pika">
-                 <div class="container">
-                    <div class="card p-3" style="width: 20rem;">
-                    {% if imagen_base64 %}
-                        <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil">
-                    {% else %}
-                        <p>No se ha cargado ninguna imagen de perfil</p>
-                    {% endif %}
-                        <div class="card-body">
-                          <p class="text-center card-text">
-                            {{ nombre_usuario }} {{ apellido_usuario }}
-                          </p>
-        
-                        </div>
-                      </div>
-        
+                <div class="text-center card-text">    
+                    <h1>Perfil</h1>
+                </div>
+            <div class="card p-3" style="width: 20rem;">
 
-                 </div>   
-        
+                {% if imagen_base64 %}
+                <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil">
+                {% else %}
+                <p>No se ha cargado ninguna imagen de perfil</p>
+                {% endif %}
+                    <div class="card-body">
+                        <p class="text-center card-text">
+                            {{ nombre_usuario }}, {{ apellido_usuario }}
+                        </p>
+                    </div>
+            </div>
+            </div>   
         </div>
-        </div>
+
+    </div>
         
         
-        <div class="col-9">
-        <div class="">
-            <div class="">
-        
-                <div>
-            
-                    <div class="">
-                            <div class="layout">
+    <div class="col container">
+        <div class="p-3">
+                <div class="">
                             {% if error %}
                         <div class="error-message">  
                                 {{error}}
@@ -88,23 +82,9 @@
                                 </form>
                             </div>
                         </div>
-                
-                        </div>
-                
-                    </div>
-                
                 </div>
-            
-            </div>
-            
-        
-        
         </div>
-        </div>
-        
-
+    </div>
 </div>
-
 </div>
-
 {% endblock %}

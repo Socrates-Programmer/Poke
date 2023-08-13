@@ -5,42 +5,52 @@
 {% endblock %}
 
 {% block head %}
-
-<h1>Personas registradas:</h1>
+<div class="container"><h1>Personas registradas:</h1>
+</div>
 
 {% endblock %}
 
 {% block body %}
-    <div class="container">
 
-        <div>
-            <ol>
-                <form action="/enviar_solicitud_amistad" method="post">
+{% for user in friends %}
+<div class="container">
+    <div class="container" id="pika">
+        <div class="container">
+            <div class="card p-3" style="width: 15rem;">
+            
+                {% if imagen_users_base64[loop.index0] %}
+                <img src="data:image/jpeg;base64, {{ imagen_users_base64[loop.index0] }}" title="{{ user['name'] }}, {{ user['last_name'] }}">
 
-                {% for user in friends %}
-                <li>{{ user['name'] }}, {{ user['last_name'] }}</li>
+                {% else %}
+                    <img src="{{ url_for('static', filename='no_profile.png') }}" title="No hay foto">
+                {% endif %}
 
-                <div class="">        
-                    {% if not POST %}
-
-                    <!-- Formulario de solicitud de amistad -->
-                        <!-- Aquí van los campos del formulario, como el ID del receptor, etc. -->
-                        <input type="submit" name="accion" value="enviar solicitud">
-                    </form>                    
+                <div class="card-body">
+                        <p class="text-center card-text">
+                        {{ user['name'] }}, {{ user['last_name'] }}
         
-                    {% else %}
-                        Ya se leenvio la solicitud
-                    {% endif %}
-                    <br>
-                    <br>
+                        </p>
+                        <div class="text-center">
 
-                    {% endfor %}
+                        <form action="" method="post">
+                            <input type="submit" value="Envia solicitud">
+                        </form>
 
-
+                        </div>
+        
                 </div>
 
-            </ol>
-        </div>
+
+            </div>
+        </div>   
 
     </div>
+
+
+</div>
+<br>
+{% endfor %}
+
+
+
 {% endblock %}

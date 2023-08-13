@@ -5,7 +5,7 @@
     {% if imagen_base64 %}
         <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil" alt="" width="35" height="35" class="rounded-circle">
     {% else %}
-        <p>No se ha cargado ninguna imagen de perfil</p>
+        <img class="img_noprofile" src="{{ url_for('static', filename='no_profile.png') }}" alt="No hay foto" title="No hay foto">
     {% endif %}
 
 </a>

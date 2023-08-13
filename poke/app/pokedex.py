@@ -59,12 +59,22 @@ def index():
 def pokemones():
     db, c = get_db()
 
-    # Obtener el nombre del usuario de la base de datos
-    user_id = g.user['id_user']
-    c.execute("SELECT name, last_name from users")
+    # Obtener el nombre y el apellido de todos los usuarios de la base de datos
+    c.execute("SELECT name, last_name, imagen FROM users")
     all_users = c.fetchall()
-    names_list = [{'name': user['name'], 'last_name': user['last_name']} for user in all_users]
-    
+    users_list = [{'name': user['name'], 'last_name': user['last_name']} for user in all_users]
+
+    # Obtener la imagen de cada usuario y codificarla en base64
+    imagen_users_base64 = []
+    for user in all_users:
+        imagen_path = user['imagen']
+        if imagen_path:
+            imagen_base64 = base64.b64encode(imagen_path).decode('utf-8')
+            imagen_users_base64.append(imagen_base64)
+        else:
+            imagen_users_base64.append(None)
+
+    user_id = g.user['id_user']
     # Obtener la imagen del usuario de la base de datos
     c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
     image_data = c.fetchone()
@@ -76,7 +86,7 @@ def pokemones():
 
 
 
-    return render_template('menus/friends.html', imagen_base64=imagen_base64 if session else None, friends = names_list)
+    return render_template('menus/friends.html', imagen_base64=imagen_base64 if session else None, friends = users_list, imagen_users_base64 = imagen_users_base64 )
 
 
 pokemon_name = "pikachu"
