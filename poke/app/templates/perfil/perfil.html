@@ -23,7 +23,7 @@
                 {% if imagen_base64 %}
                 <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil">
                 {% else %}
-                <p>No se ha cargado ninguna imagen de perfil</p>
+                <img src="{{ url_for('static', filename='no_profile.png') }}" title="No hay foto">
                 {% endif %}
                     <div class="card-body">
                         <p class="text-center card-text">

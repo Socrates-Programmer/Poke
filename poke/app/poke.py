@@ -55,7 +55,7 @@ def index():
     # Antes del bloque if request.method == 'POST':
     imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
-    return render_template('menus/index.html', imagen_base64=imagen_base64 if 'user' in g and g.user else None)
+    return render_template('indexContent/index.html', imagen_base64=imagen_base64 if 'user' in g and g.user else None)
 
 """
 
@@ -68,19 +68,6 @@ def signup():
     db, c = get_db()
     error = None
 
-    if 'user' in g and g.user is not None:
-        db, c = get_db()
-        #Obtener el nombre del usuario de la base de datos
-        user_id = g.user['id_user']
-        c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
-        image_data = c.fetchone()
-        imagen_path = image_data['imagen'] if image_data else None
-        #Obtener el nombre del usuario de la base de datos////
-    # Antes del bloque if request.method == 'POST'
-        imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
-
-        return render_template('menus/index.html', imagen_base64=imagen_base64 if session else None)
-
     #////////////REQUEST DE LOS INPUTS START////////
 
     if request.method == 'POST':
@@ -88,6 +75,7 @@ def signup():
         lastname = request.form['lastname']
         email = request.form['email']
         password = request.form['password']
+        confirm_password = request.form['confirm_password']
     #////////////REQUEST DE LOS INPUTS START////////ENDS
 
     #funcion de campos requeridos
@@ -106,6 +94,14 @@ def signup():
         if not password:
             error = 'password es requerido'
             return render_template('registros/signup.html', error=error)
+        if not confirm_password:
+            error = 'confirm password es requerido'
+            return render_template('registros/signup.html', error=error)
+
+        if password != confirm_password:
+            error = 'La contraseña no es igual'
+            return render_template('registros/signup.html', error=error)
+
           #funcion de campos requeridos ENDS
 
     #////////NO ACEPTAR CARECTERES ESPECIALES/////////////
@@ -148,19 +144,6 @@ def signup():
 
 @bp.route('/login', methods=['POST', 'GET'])
 def login():
-    if 'user' in g and g.user is not None:
-        db, c = get_db()
-        #Obtener el nombre del usuario de la base de datos
-        user_id = g.user['id_user']
-        c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
-        image_data = c.fetchone()
-        imagen_path = image_data['imagen'] if image_data else None
-        #Obtener el nombre del usuario de la base de datos////
-    # Antes del bloque if request.method == 'POST'
-        imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
-
-        return render_template('menus/index.html', imagen_base64=imagen_base64 if session else None)
-
     error = None
 
     if request.method == 'POST':

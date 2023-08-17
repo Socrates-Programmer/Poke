@@ -1,5 +1,13 @@
+.body{
+}
+
+.posts{
+   box-shadow: 5px 5px 5px rgb(194, 194, 194);
+}
+
 .layout{
-    width: 100%;
+    width:70%;
+    padding-left:20%;
 }
 
 .input{
@@ -21,7 +29,7 @@
 }
 
 .imglogo{
-    width: 200px;
+    width: 100px;
     padding-top: 3%;
 }
 
@@ -50,4 +58,17 @@
 
 .texto_perfil{
     padding-left:50%;
+}
+
+.img-poke:hover{
+    transform: scale(1.1);
+}
+
+.small-input {
+    width: 200px; /* O el valor que desees */
+}
+
+
+.icons{
+    width: 50px;
 }
