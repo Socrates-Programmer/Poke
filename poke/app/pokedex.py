@@ -78,10 +78,10 @@ def pokemones():
         # Obtener la imagen de cada usuario y codificarla en base64
         imagen_users_base64 = []
         for user in all_users:
-            imagen_path = user['imagen']
-            if imagen_path:
-                imagen_base64 = base64.b64encode(imagen_path).decode('utf-8')
-                imagen_users_base64.append(imagen_base64)
+            imagen_path2 = user['imagen']
+            if imagen_path2:
+                imagen_base642 = base64.b64encode(imagen_path2).decode('utf-8')
+                imagen_users_base64.append(imagen_base642)
             else:
                 imagen_users_base64.append(None)
     else:

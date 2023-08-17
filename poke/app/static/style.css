@@ -72,3 +72,17 @@
 .icons{
     width: 50px;
 }
+
+.imgnotify{
+    width: 20px;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.btn-notify{
+    width: auto; /* En lugar de un ancho fijo */
+    padding: 5px 10px; /* Ajustar el espacio interno (padding) */
+    font-size: 14px; /* Tamaño de la fuente */
+}

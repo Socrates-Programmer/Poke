@@ -28,20 +28,50 @@
                         <li><a href="/" class="nav-link px-2 text-secondary">Inicio</a></li>
                         {% if g.user %}
                         <li><a href="/pokedex/friends" class="nav-link px-2 text-white">Friends</a></li>
-                        <li><a href="/pokedex/posts" class="nav-link px-2 text-white">Posts</a></li>
                         {% endif %}
+                        <li><a href="/pokedex/posts" class="nav-link px-2 text-white">Posts</a></li>
                         <li><a href="/pokedex" class="nav-link px-2 text-white">Pokedex</a></li>
                     </ul>
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="POST">
                         
                     <input type="search" class="form-control form-control-sm" placeholder="Buscar..." aria-label="Buscar" >
                     </form>
-                    <div class="text-end">
+                    <div class="text-end d-flex align">
                         {% if not g.user %}
+                        <div class="container">
+
                             <a href="/login" class="btn btn-outline-light me-2">Ingresar</a>
                             <a href="/signup" class="btn btn-warning">Registrarse</a>
                         {% else %}
-                            <div class="container">
+                        <div class="container">
+                            <div class="dropdown text-end">
+                                <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">    
+                                    <img src="{{ url_for('static', filename='campana.png') }}" alt="Imagen de perfil" alt="" class="imgnotify">
+                            
+                            </a>
+                            <ul class=" dropdown-menu text p-3" aria-labelledby="dropdownUser1">
+                                <li class="card d-flex align-items-center p-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="row">
+                                            <div class=" ">
+                                                <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    Marcos, le ha enviado una <b>solicitud!</b>
+                                                </p>
+                                            </div>
+                                            <div class="col-4 text-end d-flex align m-2">
+                                                <button class="btn btn btn-success btn-sm btn-notify m-2" type="button"><b>Aceptar</b></button>
+                                                <button class="btn btn btn-danger btn-sm btn-notify m-2" type="button"><b>Rechazar</b></button>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                </li>
+                                
+                                <!-- Los otros elementos li aquí... -->
+                            </ul>
+                                                                                    
+                            </div>
+                        </div>
                                 {% include 'base_perfil.html' %}
                             </div>
                         {% endif %}

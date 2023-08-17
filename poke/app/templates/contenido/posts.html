@@ -49,7 +49,7 @@
                     <img class="img_noprofile" src="{{ url_for('static', filename='no_profile.png') }}" alt="No hay foto" title="No hay foto">
                 {% endif %}
                 <div class="ms-2">
-                    {{ message['name'] }} / Fecha:
+                    {{ message['name'] }}, {{ message['last_name'] }} / Fecha:
                 </div>
                 <div class="ms-2">
                     {{ message['fecha'] }}
