@@ -45,6 +45,20 @@ def perfil():
     error = None
 #Obtener el nombre del usuario de la base de datos
     user_id = g.user['id_user']
+ # Obtener el ID del usuario actual desde la sesión
+
+    # Consulta para obtener las solicitudes de amistad recibidas por el usuario actual
+    c.execute("""
+        SELECT n.id, u.name AS sender_name, u.last_name AS sender_last_name, n.created_at
+        FROM notification n
+        JOIN users u ON n.sender_id = u.id_user
+        WHERE n.receptor_id = %s
+        ORDER BY n.created_at DESC
+    """, (user_id,))
+    
+    received_requests = c.fetchall()
+
+
     c.execute('SELECT name FROM users WHERE id_user = %s', (user_id,))
     user = c.fetchone()
     nombre_usuario = user['name'] if user else None
@@ -69,7 +83,7 @@ def perfil():
 
         if not new_name or not new_lastname:
             error = 'Los campos de Nombre y Apellido son requeridos.'
-            return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
+            return redirect(url_for(request.endpoint))
         else:
             validar(new_name, new_lastname, nombre_usuario, apellido_usuario, imagen_base64)        # Validar que name y lastname no contengan números ni caracteres especiales
         
@@ -86,7 +100,7 @@ def perfil():
     # Convertir los datos de la imagen a una cadena base64
     imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
-    return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
+    return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error, received_requests=received_requests)
 
 
 # ...

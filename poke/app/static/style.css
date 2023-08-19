@@ -85,3 +85,10 @@
     padding: 5px 10px; /* Ajustar el espacio interno (padding) */
     font-size: 14px; /* Tamaño de la fuente */
 }
+
+/* Agrega este código a tu archivo CSS o en la etiqueta <style> en tu HTML */
+.custom-toggler-icon {
+    background-color: white; /* Cambia el color de fondo del ícono a blanco */
+    border: none; /* Elimina el borde del ícono */
+  }
+  
