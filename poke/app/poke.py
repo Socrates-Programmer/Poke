@@ -43,6 +43,20 @@ def allowed_file(filename):
 def index():
     db, c = get_db()
 
+    if 'user' in g and g.user is not None:
+        user_id = g.user['id_user']  # Obtener el ID del usuario actual desde la sesión
+
+        # Consulta para obtener las solicitudes de amistad recibidas por el usuario actual
+        c.execute("""
+            SELECT n.id, u.name AS sender_name, u.last_name AS sender_last_name, n.created_at
+            FROM notification n
+            JOIN users u ON n.sender_id = u.id_user
+            WHERE n.receptor_id = %s
+            ORDER BY n.created_at DESC
+        """, (user_id,))
+    
+        received_requests = c.fetchall()
+
     # Obtener el nombre del usuario de la base de datos
     if 'user' in g and g.user is not None:
         user_id = g.user['id_user']
@@ -55,7 +69,7 @@ def index():
     # Antes del bloque if request.method == 'POST':
     imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
 
-    return render_template('indexContent/index.html', imagen_base64=imagen_base64 if 'user' in g and g.user else None)
+    return render_template('indexContent/index.html', imagen_base64=imagen_base64 if 'user' in g and g.user else None, received_requests=received_requests if 'user' in g and g.user else None)
 
 """
 
