@@ -1,4 +1,7 @@
-
+.body{
+    font-family: 'Rufina', serif;
+    font-size: 17px;
+}
 
 .posts{
    box-shadow: 5px 5px 5px rgb(194, 194, 194);
@@ -91,4 +94,19 @@
     background-color: white; /* Cambia el color de fondo del ícono a blanco */
     border: none; /* Elimina el borde del ícono */
   }
-  
+
+  #notify {
+    background-color: white; /* Color de fondo inicial */
+    transition: background-color 0.6s ease; /* Agrega la transición a la propiedad background-color */
+    border-radius: 20px;
+    border: 1px solid #4e4e4e; /* Ancho, estilo y color del borde */
+}
+
+#notify:hover {
+    background-color: rgb(191, 191, 191); /* Color de fondo al hacer hover */
+}
+
+.navChat{
+    font-family: 'Handjet', cursive;
+    font-size: 30px;
+}
