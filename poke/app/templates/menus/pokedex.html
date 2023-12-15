@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    ALL POKEMONS
+{% endblock %}
+
+{% block head %}
+    
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="container">
+      <h1>Pokemon list</h1>
+    </div>
+  {% for pokemon in pokemons %}
+ <ul class="listapokemones">
+    <li>
+        <div class="card" style="width: 18rem;">
+            {% if pokemon.image_url %}
+            <img src="{{ pokemon.image_url }}" class="card-img-top img-poke" alt="{{ pokemon.name }} Image">
+            {% else %}
+            <p>No image available</p>
+            {% endif %}
+            <div class="card-body text-center">
+              <p class="card-text">{{ pokemon.name }}
+            </p>
+            </div>
+          </div>
+    </li>
+ </ul>
+ {% endfor %}
+
+</div>
+{% endblock %}

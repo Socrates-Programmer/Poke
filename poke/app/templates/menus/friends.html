@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Friends
+{% endblock %}
+
+{% block head %}
+<div class="container"><h1>Personas registradas:</h1>
+</div>
+
+{% endblock %}
+
+{% block body %}
+
+{% for user in friends %}
+<div class="container">
+    <div class="container" id="pika">
+        <div class="container">
+            <div class="card p-3" style="width: 15rem;">
+            
+                {% if imagen_users_base64[loop.index0] %}
+                <img src="data:image/jpeg;base64, {{ imagen_users_base64[loop.index0] }}" title="{{ user['name'] }}, {{ user['last_name'] }}">
+
+                {% else %}
+                    <img src="{{ url_for('static', filename='no_profile.png') }}" title="No hay foto">
+                {% endif %}
+
+                <div class="card-body">
+                        <p class="text-center card-text">
+                        {{ user['name'] }}, {{ user['last_name'] }}
+        
+                        </p>
+                        <div class="text-center">
+
+                        <form action="" method="post">
+                            <input class="btn btn-warning" type="submit" value="Envia solicitud">
+                            <input type="hidden" name="id_user" value="{{ user['id_user'] }}">
+                        </form>
+
+                        </div>
+        
+                </div>
+
+
+            </div>
+        </div>   
+
+    </div>
+
+
+</div>
+<br>
+{% endfor %}
+
+
+
+{% endblock %}
