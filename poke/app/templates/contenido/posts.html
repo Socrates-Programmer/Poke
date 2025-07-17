@@ -4,63 +4,136 @@
     Posts-Users
 {% endblock %}
 
+{% block head %}
+    <style>
+        .posts-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 2rem;
+        }
+        .post-card {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 16px rgba(44,62,80,0.08);
+            margin-bottom: 2rem;
+            padding: 2rem 1.5rem 1.2rem 1.5rem;
+            border: 1px solid #ececec;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+        .post-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f6f6f6;
+            border: 1px solid #e0e0e0;
+        }
+        .post-user {
+            margin-left: 1rem;
+            font-weight: 500;
+            color: #222;
+        }
+        .post-date {
+            margin-left: auto;
+            font-size: 0.95rem;
+            color: #888;
+        }
+        .post-message {
+            font-size: 1.08rem;
+            color: #333;
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+            word-break: break-word;
+        }
+        .new-post-card {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 16px rgba(44,62,80,0.08);
+            margin-bottom: 2rem;
+            padding: 2rem 1.5rem 1.2rem 1.5rem;
+            border: 1px solid #ececec;
+        }
+        .new-post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .new-post-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f6f6f6;
+            border: 1px solid #e0e0e0;
+        }
+        .new-post-user {
+            margin-left: 1rem;
+            font-weight: 500;
+            color: #222;
+        }
+        .new-post-form textarea {
+            font-size: 1.08rem;
+            border-radius: 0.7rem;
+            border: 1px solid #e0e0e0;
+            background: #f9f9f9;
+            color: #222;
+            padding: 0.7rem 1rem;
+            resize: none;
+        }
+        .new-post-form .btn {
+            width: 100%;
+            font-size: 1.08rem;
+            padding: 0.7rem;
+            border-radius: 0.7rem;
+            background: #3b4cca;
+            border: none;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        .new-post-form .btn:hover {
+            background: #e3350d;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-
-{% if g.user %}
-<h1>Posts Generales:</h1>
-
-<div class="container ">
-    <div class="">
-    <div class="form card p-3 m-2 w-50 posts">
-        <div class="container p-2">       
+<div class="posts-container">
+    {% if g.user %}
+    <div class="new-post-card">
+        <div class="new-post-header">
             {% if imagen_base64 %}
-                <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil" alt="" width="35" height="35" class="rounded-circle">
+                <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil" class="new-post-avatar">
             {% else %}
-                <img class="img_noprofile" src="{{ url_for('static', filename='no_profile.png') }}" alt="No hay foto" title="No hay foto">
+                <img class="new-post-avatar" src="{{ url_for('static', filename='no_profile.png') }}" alt="No hay foto" title="No hay foto">
             {% endif %}
-        
+            <div class="new-post-user">{{ username }}</div>
         </div>
-        
-        <form action="" method="post">
-              <div class="mb-3">
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" placeholder="{{ username }}, ¿Que estas pensando?" name="message_user"></textarea>
-              </div>
-            <div class="mb-3">
-                <input class="btn btn-outline-success" type="submit">
-            </div>
-        </form> 
-
+        <form class="new-post-form" action="" method="post">
+            <textarea rows="2" placeholder="¿Qué estás pensando, {{ username }}?" name="message_user"></textarea>
+            <button type="submit" class="btn">Publicar</button>
+        </form>
     </div>
-    </div>
+    {% endif %}
 
+    {% for message in all_message %}
+    <div class="post-card">
+        <div class="post-header">
+            {% if message['imagen'] %}
+                <img src="data:image/jpeg;base64,{{ message['imagen'] }}" alt="Imagen de perfil" class="post-avatar">
+            {% else %}
+                <img class="post-avatar" src="{{ url_for('static', filename='no_profile.png') }}" alt="No hay foto" title="No hay foto">
+            {% endif %}
+            <div class="post-user">{{ message['name'] }}{% if message['last_name'] %}, {{ message['last_name'] }}{% endif %}</div>
+            <div class="post-date">{{ message['fecha'] }}</div>
+        </div>
+        <div class="post-message">{{ message['message'] }}</div>
+    </div>
+    {% endfor %}
 </div>
-{%else%}
-{% endif %}
-
-{% for message in all_message %}
-<div class="container">
-    <div class="card p-3 m-2 w-50 posts">
-
-        <div class="containe p-3">
-            <div class="d-flex align-items-center">
-                {% if message['imagen'] %}
-                <img src="data:image/jpeg;base64,{{ message['imagen'] }}" alt="Imagen de perfil" width="35" height="35" class="rounded-circle">
-                {% else %}
-                    <img class="img_noprofile" src="{{ url_for('static', filename='no_profile.png') }}" alt="No hay foto" title="No hay foto">
-                {% endif %}
-                <div class="ms-2">
-                    {{ message['name'] }}, {{ message['last_name'] }} / Fecha:
-                </div>
-                <div class="ms-2">
-                    {{ message['fecha'] }}
-                </div>
-            </div>
-        </div>
-
-        <p>{{ message['message'] }}</p>
-
-    </div></div>
-{% endfor %}
-
-
 {% endblock %}

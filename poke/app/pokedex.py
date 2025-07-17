@@ -23,54 +23,89 @@ def index():
     imagen_base64 = None
     received_requests = []
 
+    # Obtener usuario de la sesión
     user = g.get('user')
+    user_id = None
     if user:
         user_id = user.get('id_user')
 
         # Solicitudes de amistad recibidas
-        c.execute("""
-            SELECT n.id, u.name AS sender_name, u.last_name AS sender_last_name, n.created_at
-            FROM notification n
-            JOIN users u ON n.sender_id = u.id_user
-            WHERE n.receptor_id = %s
-            ORDER BY n.created_at DESC
-        """, (user_id,))
-        received_requests = c.fetchall()
+        try:
+            c.execute("""
+                SELECT n.id, u.name AS sender_name, u.last_name AS sender_last_name, n.created_at
+                FROM notification n
+                JOIN users u ON n.sender_id = u.id_user
+                WHERE n.receptor_id = %s
+                ORDER BY n.created_at DESC
+            """, (user_id,))
+            received_requests = c.fetchall()
+        except Exception as db_err:
+            print(f"[Error DB] Cargando solicitudes: {db_err}")
 
-        # Imagen de perfil
-        c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
-        image_data = c.fetchone()
-        if image_data and image_data['imagen']:
-            imagen_base64 = base64.b64encode(image_data['imagen']).decode('utf-8')
+        # Imagen del usuario
+        try:
+            c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
+            image_data = c.fetchone()
+            if image_data and image_data['imagen']:
+                imagen_base64 = base64.b64encode(image_data['imagen']).decode('utf-8')
+        except Exception as db_err:
+            print(f"[Error DB] Cargando imagen: {db_err}")
 
+    # Clase auxiliar
     class Pokemon:
         def __init__(self, name, image_url):
             self.name = name
             self.image_url = image_url
 
-    url = 'https://pokeapi.co/api/v2/pokemon?limit=12'
+    # Paginación
+    try:
+        page = int(request.args.get('page', 1))
+        if page < 1:
+            page = 1
+    except ValueError:
+        page = 1
+
+    per_page = 12
+    offset = (page - 1) * per_page
+    url = f'https://pokeapi.co/api/v2/pokemon?limit={per_page}&offset={offset}'
+
     try:
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
         results = data.get('results', [])
+        total_count = data.get('count', 0)
 
         pokemons = []
         for result in results:
-            name = result['name']
-            pokemon_url = result['url']
-            pokemon_data = requests.get(pokemon_url).json()
-            image_url = pokemon_data['sprites']['front_default']
-            pokemons.append(Pokemon(name, image_url))
+            name = result.get('name')
+            pokemon_url = result.get('url')
+            if not name or not pokemon_url:
+                continue
+
+            try:
+                pokemon_data = requests.get(pokemon_url).json()
+                sprites = pokemon_data.get('sprites', {})
+                image_url = sprites.get('front_default')
+                pokemons.append(Pokemon(name, image_url))
+            except Exception as e:
+                print(f"[Error] Cargando pokémon {name}: {e}")
+                continue
+
+        # Determinar si hay una siguiente página usando el total de pokémon
+        has_next = (page * per_page) < total_count
 
         return render_template(
             'menus/pokedex.html',
             pokemons=pokemons,
             imagen_base64=imagen_base64,
-            received_requests=received_requests
+            received_requests=received_requests,
+            page=page,
+            has_next=has_next
         )
     except requests.exceptions.RequestException as e:
-        return f'Error en la solicitud: {e}'
+        print(f"[Error API] {e}")
+        return "Error cargando Pokémon desde la API. Inténtalo más tarde.", 500
 
 
 @bppoke.route('/people', methods = ['POST', 'GET'])
