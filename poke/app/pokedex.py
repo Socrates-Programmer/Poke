@@ -239,7 +239,12 @@ def post():
         db.commit()
         return redirect(url_for(request.endpoint))
     
-    return render_template('contenido/posts.html', imagen_base64=imagen_base64, username = user_name, all_message = all_message, all_img = imagen_decoded, received_requests=received_requests)
+    return render_template('contenido/posts.html', 
+                    imagen_base64=imagen_base64, 
+                    username=user_name, 
+                    all_message=all_message, 
+                    received_requests=received_requests)
+
 
 def buscar(buscar):
     pokemon_name = buscar

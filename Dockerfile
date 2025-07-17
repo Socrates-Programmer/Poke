@@ -25,4 +25,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 EXPOSE 5000
 
 # Comando para iniciar la app
-CMD ["python", "poke/app/__init__.py"]
+CMD ["python", "poke/run.py"]

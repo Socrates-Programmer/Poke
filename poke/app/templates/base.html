@@ -65,28 +65,46 @@
                         <a href="/login" class="btn btn-outline-light rounded-pill px-3">Ingresar</a>
                         <a href="/signup" class="btn btn-warning rounded-pill px-3">Registrarse</a>
                     {% else %}
-                        <div class="dropdown">
-                            <a href="#" class="d-block link-light dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ url_for('static', filename='campana.png') }}" alt="Notificaciones" style="height: 32px; filter: drop-shadow(0 0 6px #00ffe7);">
+                          <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 4px 10px; cursor: pointer;">
+                              <img src="{{ url_for('static', filename='campana.png') }}" alt="Notificaciones" style="height: 24px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));">
+                              <span class="badge bg-danger ms-1" style="font-size: 0.90rem; font-weight: 700;">{{ received_requests|length }}</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end text p-3" aria-labelledby="dropdownUser1" style="min-width: 260px;">
+                            <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="dropdownUser1" 
+                                style="min-width: 260px; background: #1e1e2f; border-radius: 12px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-height: 320px; overflow-y: auto;">
+                              
+                              {% if received_requests|length == 0 %}
+                                <li class="text-center text-muted" style="font-size: 0.9rem; padding: 12px 0;">No tienes nuevas solicitudes</li>
+                              {% else %}
                                 {% for notification in received_requests %}
-                                <li class="d-flex align-items-center mb-2" id="notify">
+                                <li class="mb-3" style="border-bottom: 1px solid #333; padding-bottom: 12px;">
+                                  <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <p class="mb-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                            <span class="fw-bold text-info">{{ notification.sender_name }} {{ notification.sender_last_name }}</span> te ha enviado una <b>solicitud!</b>
-                                        </p>
-                                        <p class="mb-1 text-muted" style="font-size: 0.85em;">Fecha: {{ notification.created_at.strftime('%Y-%m-%d') }}</p>
-                                        <form action="/" method="post" class="d-flex gap-2">
-                                            <button class="btn btn-success btn-sm rounded-pill" type="submit" name="accept" value="True">Aceptar</button>
-                                            <button class="btn btn-danger btn-sm rounded-pill" type="submit" name="reject" value="True">Rechazar</button>
-                                        </form>
+                                      <p class="mb-1 text-white" style="font-weight: 700; font-size: 0.95rem;">
+                                        {{ notification.sender_name }} {{ notification.sender_last_name }}
+                                      </p>
+                                      <p class="mb-1 text-secondary" style="font-size: 0.85rem;">te ha enviado una solicitud</p>
+                                      <small class="text-muted" style="font-size: 0.75rem;">
+                                        {{ notification.created_at.strftime('%d/%m/%Y') }}
+                                      </small>
                                     </div>
+                                  </div>
+                                  <div class="mt-2 d-flex gap-2">
+                                    <form action="/" method="post" class="flex-grow-1 d-flex gap-2">
+                                      <button class="btn btn-success btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="accept" value="{{ notification.id }}">
+                                        Aceptar
+                                      </button>
+                                      <button class="btn btn-danger btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="reject" value="{{ notification.id }}">
+                                        Rechazar
+                                      </button>
+                                    </form>
+                                  </div>
                                 </li>
                                 {% endfor %}
+                              {% endif %}
                             </ul>
-                        </div>
-                        {% include 'base_perfil.html' %}
+                          </div>
+                      {% include 'base_perfil.html' %}
                     {% endif %}
                 <!-- Botón para abrir el chat lateral -->
                 <button class="btn btn-outline-secondary border-0 px-2 py-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChat" aria-controls="offcanvasChat" title="Chat">

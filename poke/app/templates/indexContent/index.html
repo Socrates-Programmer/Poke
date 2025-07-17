@@ -13,7 +13,9 @@
         Únete a la red social para entrenadores Pokémon. Comparte tus aventuras, haz nuevos amigos, publica tus logros y descubre el mundo Pokémon junto a otros fans. ¡Atrapa, comparte y conecta!
     </p>
     <div class="d-flex gap-3">
+        {% if not g.user %}
         <a href="/signup" class="btn btn-warning rounded-pill px-4 py-2 fw-bold">Registrarse</a>
+        {% endif %}
         <a href="/pokedex" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-bold">Explorar Pokédex</a>
     </div>
     <div class="mt-5 d-flex flex-wrap justify-content-center gap-4">

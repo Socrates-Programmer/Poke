@@ -4,10 +4,9 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(85) NOT NULL,
     last_name VARCHAR(36) NOT NULL,
     email VARCHAR(90) UNIQUE NOT NULL,
-    password VARCHAR(128) NOT NULL,
+    password VARCHAR(350) NOT NULL,
     imagen LONGBLOB
 );
-
 
 CREATE TABLE IF NOT EXISTS user_post (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,7 +15,6 @@ CREATE TABLE IF NOT EXISTS user_post (
     users_id_post INT,
     FOREIGN KEY (users_id_post) REFERENCES users(id_user)
 );
-
 
 CREATE TABLE IF NOT EXISTS notification (
     id INT AUTO_INCREMENT PRIMARY KEY,
