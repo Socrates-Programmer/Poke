@@ -16,7 +16,7 @@ import os
 """ 
 //////
 
-session para crear session del usuario y tenga cosas personalizadas
+seccion para crear session del usuario y tenga cosas personalizadas
 
 Check_password_hash es para encriptar la contraseña
 
@@ -116,7 +116,7 @@ def signup():
             error = 'La contraseña no es igual'
             return render_template('registros/signup.html', error=error)
 
-          #funcion de campos requeridos ENDS
+        #funcion de campos requeridos ENDS
 
     #////////NO ACEPTAR CARECTERES ESPECIALES/////////////
         if not re.match("^[a-zA-Z\s]+$", name):
@@ -143,7 +143,7 @@ def signup():
     #INSERTAR TADOS A LA BASE DE DATOS START///////////////////////////////////////////////////
         else:
             c.execute('INSERT INTO users (name, last_name, email, password) VALUES (%s, %s, %s, %s)',
-                      (name, lastname, email, generate_password_hash(password)))
+                    (name, lastname, email, generate_password_hash(password)))
             db.commit()
             
             flash('¡Registro exitoso! Por favor, inicia sesión.')

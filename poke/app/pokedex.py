@@ -20,31 +20,28 @@ class Pokemon:
 @bppoke.route('/')
 def index():
     db, c = get_db()
-    error = None
+    imagen_base64 = None
+    received_requests = []
 
-    user_id = g.user['id_user']  # Obtener el ID del usuario actual desde la sesión
+    user = g.get('user')
+    if user:
+        user_id = user.get('id_user')
 
-    # Consulta para obtener las solicitudes de amistad recibidas por el usuario actual
-    c.execute("""
-        SELECT n.id, u.name AS sender_name, u.last_name AS sender_last_name, n.created_at
-        FROM notification n
-        JOIN users u ON n.sender_id = u.id_user
-        WHERE n.receptor_id = %s
-        ORDER BY n.created_at DESC
-    """, (user_id,))
-    
-    received_requests = c.fetchall()
+        # Solicitudes de amistad recibidas
+        c.execute("""
+            SELECT n.id, u.name AS sender_name, u.last_name AS sender_last_name, n.created_at
+            FROM notification n
+            JOIN users u ON n.sender_id = u.id_user
+            WHERE n.receptor_id = %s
+            ORDER BY n.created_at DESC
+        """, (user_id,))
+        received_requests = c.fetchall()
 
-    if g.user:
-        db, c = get_db()
-        #Obtener el nombre del usuario de la base de datos
-        user_id = g.user['id_user']
+        # Imagen de perfil
         c.execute("SELECT imagen FROM users WHERE id_user = %s", (user_id,))
         image_data = c.fetchone()
-        imagen_path = image_data['imagen'] if image_data else None
-        #Obtener el nombre del usuario de la base de datos////
-    # Antes del bloque if request.method == 'POST'
-        imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
+        if image_data and image_data['imagen']:
+            imagen_base64 = base64.b64encode(image_data['imagen']).decode('utf-8')
 
     class Pokemon:
         def __init__(self, name, image_url):
@@ -57,6 +54,7 @@ def index():
         response.raise_for_status()
         data = response.json()
         results = data.get('results', [])
+
         pokemons = []
         for result in results:
             name = result['name']
@@ -64,8 +62,13 @@ def index():
             pokemon_data = requests.get(pokemon_url).json()
             image_url = pokemon_data['sprites']['front_default']
             pokemons.append(Pokemon(name, image_url))
-            print(name)
-        return render_template('menus/pokedex.html', pokemons=pokemons, imagen_base64=imagen_base64 if session else None, received_requests=received_requests)
+
+        return render_template(
+            'menus/pokedex.html',
+            pokemons=pokemons,
+            imagen_base64=imagen_base64,
+            received_requests=received_requests
+        )
     except requests.exceptions.RequestException as e:
         return f'Error en la solicitud: {e}'
 
@@ -150,7 +153,7 @@ def post():
     received_requests = c.fetchall()
 
 
-   # Seleccionar mensajes y datos de usuario (imagen y nombre)
+    # Seleccionar mensajes y datos de usuario (imagen y nombre)
     c.execute('SELECT up.message, up.fecha, up.users_id_post, u.name, u.imagen FROM user_post up JOIN users u ON up.users_id_post = u.id_user')
     user_data = c.fetchall()
     all_message = []
@@ -177,10 +180,7 @@ def post():
         all_message.append(message_info)
     #Aqui se muestran los posts de todos Ends
 
-    #aqui
-
     # Obtener el nombre del usuario de la base de datos
-
     if g.user:
         user_id = g.user['id_user']
 
@@ -189,7 +189,6 @@ def post():
         imagen_path = user_data['imagen'] if user_data else None
         user_name = user_data['name']
         imagen_base64 = base64.b64encode(imagen_path).decode('utf-8') if imagen_path else None
-
     else:
         return abort(401)
 
@@ -204,9 +203,7 @@ def post():
         c.execute('INSERT INTO user_post (message, users_id_post) VALUES (%s, %s)', (message_user, id_user,))
         db.commit()
         return redirect(url_for(request.endpoint))
-
     
-
     return render_template('contenido/posts.html', imagen_base64=imagen_base64, username = user_name, all_message = all_message, all_img = imagen_decoded, received_requests=received_requests)
 
 def buscar(buscar):
@@ -220,23 +217,3 @@ def buscar(buscar):
         print(f"URL de la imagen de {pokemon_name}: {image_url}")
     else:
         print(f"No se pudo obtener la información de {pokemon_name}")
-
-
-# def sent_requests():
-#     db, c = get_db()
-#     user_id = g.user['id_user']  # Obtener el ID del usuario actual desde la sesión
-
-#     # Consulta para obtener las solicitudes enviadas por el usuario actual
-#     c.execute("""
-#         SELECT n.id, u.name AS receiver_name, u.last_name AS receiver_last_name, n.created_at
-#         FROM notification n
-#         JOIN users u ON n.receptor_id = u.id_user
-#         WHERE n.sender_id = %s
-#         ORDER BY n.created_at DESC
-#     """, (user_id,))
-    
-#     sent_requests = c.fetchall()
-
-#     return redirect(url_for('pokedex.people', sent_requests=sent_requests))
-
-

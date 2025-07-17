@@ -43,9 +43,9 @@ def allowed_file(filename):
 def perfil():
     db, c = get_db()
     error = None
-#Obtener el nombre del usuario de la base de datos
+    #Obtener el nombre del usuario de la base de datos
     user_id = g.user['id_user']
- # Obtener el ID del usuario actual desde la sesión
+    # Obtener el ID del usuario actual desde la sesión
 
     # Consulta para obtener las solicitudes de amistad recibidas por el usuario actual
     c.execute("""
@@ -79,16 +79,8 @@ def perfil():
     if request.method == 'POST':
         new_name = request.form['new_name']
         new_lastname = request.form['new_lastname']
-
-
-        if not new_name or not new_lastname:
-            error = 'Los campos de Nombre y Apellido son requeridos.'
-            return redirect(url_for(request.endpoint))
-        else:
-            validar(new_name, new_lastname, nombre_usuario, apellido_usuario, imagen_base64)        # Validar que name y lastname no contengan números ni caracteres especiales
         
         if not error:
-        
             c.execute("UPDATE users SET name = %s, last_name = %s WHERE id_user = %s", (new_name, new_lastname, user_id))
             db.commit()
 
@@ -104,7 +96,6 @@ def perfil():
 
 
 # ...
-
 
 @bpp.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -135,7 +126,7 @@ def upload():
         if not file:
             error = 'File es requerido'
             return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
-       
+
         elif file and allowed_file(file.filename):
             image_data = file.read()
             # Resto del código...
@@ -153,20 +144,6 @@ def upload():
 
     return render_template('perfil/perfil.html')
 
-
-
-def hola():
-        if request.method == 'POST':
-            file = request.files['file']
-            db, c = get_db()
-
-        if not file:
-            error = 'Archivo requerido'
-            return render_template('perfil/perfil.html', error=error)
-
-        else:
-            redirect(url_for('perfil.upload'))
-
 @bpp.route('/imagen')
 @login_required
 def mostrar_imagen():
@@ -180,13 +157,3 @@ def mostrar_imagen():
         return send_file(imagen_path)
 
     return abort(404)
-
-
-def validar(new_name, new_lastname, nombre_usuario, apellido_usuario, imagen_base64):
-    if not re.match("^[a-zA-Z\s]+$", new_name):
-        error = 'El nombre solo debe contener letras'
-        return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
-    
-    if not re.match("^[a-zA-Z\s]+$", new_lastname):
-        error = 'El apellido solo debe contener letras'
-        return render_template('perfil/perfil.html', nombre_usuario=nombre_usuario, apellido_usuario=apellido_usuario, imagen_base64=imagen_base64, error=error)
