@@ -1,31 +1,33 @@
 version: '3.8'
 services:
   db:
-    image: postgres:15
+    image: mysql:8.0
     restart: always
     environment:
-      POSTGRES_DB: poke_db
-      POSTGRES_USER: poke_user
-      POSTGRES_PASSWORD: poke_pass
+      MYSQL_DATABASE: poke_db
+      MYSQL_USER: poke_user
+      MYSQL_PASSWORD: poke_pass
+      MYSQL_ROOT_PASSWORD: root_pass
     volumes:
-      - poke_db_data:/var/lib/postgresql/data
+      - poke_db_data:/var/lib/mysql
     ports:
-      - "5432:5432"
+      - "3306:3306"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U poke_user"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u poke_user --password=poke_pass"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   web:
     build: .
-    command: python Poke/poke/app/poke.py
+    command: python poke/app/__init__.py
+    working_dir: /app
     volumes:
       - .:/app
     ports:
       - "5000:5000"
     environment:
-      DATABASE_URL: postgresql://poke_user:poke_pass@db:5432/poke_db
+      DATABASE_URL: mysql://poke_user:poke_pass@db:3306/poke_db
     depends_on:
       db:
         condition: service_healthy

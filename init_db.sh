@@ -4,4 +4,4 @@
 #!/bin/bash
 set -e
 
-psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f /app/init.sql
+mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < /app/init.sql

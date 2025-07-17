@@ -6,6 +6,21 @@
 {% endblock %}
 
 {% block body %}
-    
-
+<div class="d-flex flex-column align-items-center justify-content-center py-5">
+    <img src="{{ url_for('static', filename='img/pokedex_logo.png') }}" alt="Pokedex Logo" style="height: 80px; filter: drop-shadow(0 0 12px #00ffe7);">
+    <h1 class="mt-4 mb-2 fw-bold" style="font-family: 'Handjet', 'Rufina', sans-serif; color: #222; letter-spacing: 2px;">¡Bienvenido a PokéSocial!</h1>
+    <p class="lead mb-4" style="max-width: 500px; color: #444;">
+        Únete a la red social para entrenadores Pokémon. Comparte tus aventuras, haz nuevos amigos, publica tus logros y descubre el mundo Pokémon junto a otros fans. ¡Atrapa, comparte y conecta!
+    </p>
+    <div class="d-flex gap-3">
+        <a href="/signup" class="btn btn-warning rounded-pill px-4 py-2 fw-bold">Registrarse</a>
+        <a href="/pokedex" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-bold">Explorar Pokédex</a>
+    </div>
+    <div class="mt-5 d-flex flex-wrap justify-content-center gap-4">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu Sprite" style="height: 60px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur Sprite" style="height: 60px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander Sprite" style="height: 60px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt="Squirtle Sprite" style="height: 60px;">
+    </div>
+</div>
 {% endblock %}

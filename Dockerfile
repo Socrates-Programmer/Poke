@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 # Instala dependencias del sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libpq-dev \
+    default-libmysqlclient-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Crea el directorio de la app
@@ -19,10 +19,10 @@ WORKDIR /app
 COPY . /app
 
 # Instala las dependencias de Python
-RUN pip install --upgrade pip && pip install -r Poke/poke/app/requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Expone el puerto de Flask
 EXPOSE 5000
 
 # Comando para iniciar la app
-CMD ["python", "Poke/poke/app/poke.py"]
+CMD ["python", "poke/app/__init__.py"]
