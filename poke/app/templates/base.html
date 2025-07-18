@@ -40,81 +40,144 @@
 <div>
 <div class="">
     <div>
+
         <header class="bg-dark text-white shadow-sm py-2">
-            <div class="container-fluid d-flex align-items-center justify-content-between" id="XDD">
-                <div class="d-flex align-items-center gap-3">
-                    <a href="/" class="d-flex align-items-center">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid" id="XDD">
+                    <a href="/" class="navbar-brand d-flex align-items-center">
                         <img src="{{ url_for('static', filename='img/pokedex_logo.png') }}" alt="Logo" style="height: 48px; filter: drop-shadow(0 0 8px #00ffe7);">
                     </a>
-                    <nav>
-                        <ul class="nav gap-2">
-                            <li><a href="/" class="nav-link text-secondary fw-bold">Inicio</a></li>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2">
+                            <li class="nav-item"><a href="/" class="nav-link text-secondary fw-bold">Inicio</a></li>
                             {% if g.user %}
-                            <li><a href="/pokedex/people" class="nav-link text-white fw-bold">People</a></li>
+                            <li class="nav-item"><a href="/pokedex/people" class="nav-link text-white fw-bold">People</a></li>
                             {% endif %}
-                            <li><a href="/pokedex/posts" class="nav-link text-white fw-bold">Posts</a></li>
-                            <li><a href="/pokedex" class="nav-link text-white fw-bold">Pokedex</a></li>
+                            <li class="nav-item"><a href="/pokedex/posts" class="nav-link text-white fw-bold">Posts</a></li>
+                            <li class="nav-item"><a href="/pokedex" class="nav-link text-white fw-bold">Pokedex</a></li>
                         </ul>
-                    </nav>
+                        <!-- Buscador visible en desktop y dentro del menú en móvil -->
+                        <form class="d-lg-none my-2" role="search" method="POST">
+                            <input type="search" class="form-control form-control-sm rounded-pill" placeholder="Buscar..." aria-label="Buscar" name="buscarPokemon" style="background: #222; color: #fff; border: none;">
+                        </form>
+                        <div class="d-lg-none mb-2">
+                            {% if not g.user %}
+                                <a href="/login" class="btn btn-outline-light rounded-pill px-3 w-100 mb-2">Ingresar</a>
+                                <a href="/signup" class="btn btn-warning rounded-pill px-3 w-100">Registrarse</a>
+                            {% else %}
+                                <div class="dropdown w-100">
+                                    <a href="#" class="d-flex align-items-center dropdown-toggle w-100 justify-content-center" id="dropdownUser1Mobile" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 4px 10px; cursor: pointer;">
+                                        <img src="{{ url_for('static', filename='campana.png') }}" alt="Notificaciones" style="height: 24px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));">
+                                        <span class="badge bg-danger ms-1" style="font-size: 0.90rem; font-weight: 700;">{{ received_requests|length }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="dropdownUser1Mobile" 
+                                        style="min-width: 260px; background: #1e1e2f; border-radius: 12px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-height: 320px; overflow-y: auto;">
+                                        {% if received_requests|length == 0 %}
+                                            <li class="text-center text-muted" style="font-size: 0.9rem; padding: 12px 0;">No tienes nuevas solicitudes</li>
+                                        {% else %}
+                                            {% for notification in received_requests %}
+                                            <li class="mb-3" style="border-bottom: 1px solid #333; padding-bottom: 12px;">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div>
+                                                        <p class="mb-1 text-white" style="font-weight: 700; font-size: 0.95rem;">
+                                                            {{ notification.sender_name }} {{ notification.sender_last_name }}
+                                                        </p>
+                                                        <p class="mb-1 text-secondary" style="font-size: 0.85rem;">te ha enviado una solicitud</p>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">
+                                                            {{ notification.created_at.strftime('%d/%m/%Y') }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2 d-flex gap-2">
+                                                    <form action="/" method="post" class="flex-grow-1 d-flex gap-2">
+                                                        <button class="btn btn-success btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="accept" value="{{ notification.id }}">
+                                                            Aceptar
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="reject" value="{{ notification.id }}">
+                                                            Rechazar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                {% include 'base_perfil.html' %}
+                            {% endif %}
+                            <!-- Botón para abrir el chat lateral en móvil -->
+                            <button class="btn btn-outline-secondary border-0 px-2 py-1 w-100 mt-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChat" aria-controls="offcanvasChat" title="Chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
+                                    <path d="M2.678 11.894a1 1 0 0 0 .287.801c.07.07.15.128.243.17A8.06 8.06 0 0 0 8 15c1.306 0 2.555-.252 3.692-.735a7.964 7.964 0 0 0 2.387-1.518c.093-.042.173-.1.243-.17a1 1 0 0 0 .287-.801V12c0-1.105-1.12-2-2.5-2H5c-1.38 0-2.5.895-2.5 2v-.106z"/>
+                                    <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13A6 6 0 1 1 8 2a6 6 0 0 1 0 12z"/>
+                                    <path d="M5 7a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Buscador visible solo en desktop -->
+                        <form class="d-none d-lg-block" role="search" method="POST" style="min-width: 200px;">
+                            <input type="search" class="form-control form-control-sm rounded-pill" placeholder="Buscar..." aria-label="Buscar" name="buscarPokemon" style="background: #222; color: #fff; border: none;">
+                        </form>
+                        <div class="d-none d-lg-flex align-items-center gap-2 ms-lg-3 mt-2 mt-lg-0">
+                            {% if not g.user %}
+                                <a href="/login" class="btn btn-outline-light rounded-pill px-3">Ingresar</a>
+                                <a href="/signup" class="btn btn-warning rounded-pill px-3">Registrarse</a>
+                            {% else %}
+                                <div class="dropdown">
+                                    <a href="#" class="d-flex align-items-center dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 4px 10px; cursor: pointer;">
+                                        <img src="{{ url_for('static', filename='campana.png') }}" alt="Notificaciones" style="height: 24px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));">
+                                        <span class="badge bg-danger ms-1" style="font-size: 0.90rem; font-weight: 700;">{{ received_requests|length }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="dropdownUser1" 
+                                        style="min-width: 260px; background: #1e1e2f; border-radius: 12px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-height: 320px; overflow-y: auto;">
+                                        {% if received_requests|length == 0 %}
+                                            <li class="text-center text-muted" style="font-size: 0.9rem; padding: 12px 0;">No tienes nuevas solicitudes</li>
+                                        {% else %}
+                                            {% for notification in received_requests %}
+                                            <li class="mb-3" style="border-bottom: 1px solid #333; padding-bottom: 12px;">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div>
+                                                        <p class="mb-1 text-white" style="font-weight: 700; font-size: 0.95rem;">
+                                                            {{ notification.sender_name }} {{ notification.sender_last_name }}
+                                                        </p>
+                                                        <p class="mb-1 text-secondary" style="font-size: 0.85rem;">te ha enviado una solicitud</p>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">
+                                                            {{ notification.created_at.strftime('%d/%m/%Y') }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2 d-flex gap-2">
+                                                    <form action="/" method="post" class="flex-grow-1 d-flex gap-2">
+                                                        <button class="btn btn-success btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="accept" value="{{ notification.id }}">
+                                                            Aceptar
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="reject" value="{{ notification.id }}">
+                                                            Rechazar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                {% include 'base_perfil.html' %}
+                            {% endif %}
+                            <!-- Botón para abrir el chat lateral en desktop -->
+                            <button class="btn btn-outline-secondary border-0 px-2 py-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChat" aria-controls="offcanvasChat" title="Chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
+                                    <path d="M2.678 11.894a1 1 0 0 0 .287.801c.07.07.15.128.243.17A8.06 8.06 0 0 0 8 15c1.306 0 2.555-.252 3.692-.735a7.964 7.964 0 0 0 2.387-1.518c.093-.042.173-.1.243-.17a1 1 0 0 0 .287-.801V12c0-1.105-1.12-2-2.5-2H5c-1.38 0-2.5.895-2.5 2v-.106z"/>
+                                    <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13A6 6 0 1 1 8 2a6 6 0 0 1 0 12z"/>
+                                    <path d="M5 7a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <form class="d-none d-md-block" role="search" method="POST" style="min-width: 200px;">
-                    <input type="search" class="form-control form-control-sm rounded-pill" placeholder="Buscar..." aria-label="Buscar" name="buscarPokemon" style="background: #222; color: #fff; border: none;">
-                </form>
-                <div class="d-flex align-items-center gap-2">
-                    {% if not g.user %}
-                        <a href="/login" class="btn btn-outline-light rounded-pill px-3">Ingresar</a>
-                        <a href="/signup" class="btn btn-warning rounded-pill px-3">Registrarse</a>
-                    {% else %}
-                          <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 4px 10px; cursor: pointer;">
-                              <img src="{{ url_for('static', filename='campana.png') }}" alt="Notificaciones" style="height: 24px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));">
-                              <span class="badge bg-danger ms-1" style="font-size: 0.90rem; font-weight: 700;">{{ received_requests|length }}</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="dropdownUser1" 
-                                style="min-width: 260px; background: #1e1e2f; border-radius: 12px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-height: 320px; overflow-y: auto;">
-                              
-                              {% if received_requests|length == 0 %}
-                                <li class="text-center text-muted" style="font-size: 0.9rem; padding: 12px 0;">No tienes nuevas solicitudes</li>
-                              {% else %}
-                                {% for notification in received_requests %}
-                                <li class="mb-3" style="border-bottom: 1px solid #333; padding-bottom: 12px;">
-                                  <div class="d-flex align-items-center justify-content-between">
-                                    <div>
-                                      <p class="mb-1 text-white" style="font-weight: 700; font-size: 0.95rem;">
-                                        {{ notification.sender_name }} {{ notification.sender_last_name }}
-                                      </p>
-                                      <p class="mb-1 text-secondary" style="font-size: 0.85rem;">te ha enviado una solicitud</p>
-                                      <small class="text-muted" style="font-size: 0.75rem;">
-                                        {{ notification.created_at.strftime('%d/%m/%Y') }}
-                                      </small>
-                                    </div>
-                                  </div>
-                                  <div class="mt-2 d-flex gap-2">
-                                    <form action="/" method="post" class="flex-grow-1 d-flex gap-2">
-                                      <button class="btn btn-success btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="accept" value="{{ notification.id }}">
-                                        Aceptar
-                                      </button>
-                                      <button class="btn btn-danger btn-sm flex-grow-1" style="border-radius: 6px; font-size: 0.85rem;" type="submit" name="reject" value="{{ notification.id }}">
-                                        Rechazar
-                                      </button>
-                                    </form>
-                                  </div>
-                                </li>
-                                {% endfor %}
-                              {% endif %}
-                            </ul>
-                          </div>
-                      {% include 'base_perfil.html' %}
-                    {% endif %}
-                <!-- Botón para abrir el chat lateral -->
-                <button class="btn btn-outline-secondary border-0 px-2 py-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChat" aria-controls="offcanvasChat" title="Chat">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
-                      <path d="M2.678 11.894a1 1 0 0 0 .287.801c.07.07.15.128.243.17A8.06 8.06 0 0 0 8 15c1.306 0 2.555-.252 3.692-.735a7.964 7.964 0 0 0 2.387-1.518c.093-.042.173-.1.243-.17a1 1 0 0 0 .287-.801V12c0-1.105-1.12-2-2.5-2H5c-1.38 0-2.5.895-2.5 2v-.106z"/>
-                      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 13A6 6 0 1 1 8 2a6 6 0 0 1 0 12z"/>
-                      <path d="M5 7a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                    </svg>
-                </button>
-            </div>
+            </nav>
         </header>
 
         <!-- Offcanvas Chat Panel -->
