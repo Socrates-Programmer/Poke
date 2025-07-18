@@ -1,5 +1,8 @@
 from flask import Flask, current_app
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 def create_app():
     app = Flask(__name__)
@@ -10,8 +13,8 @@ def create_app():
         DATABASE_HOST=os.environ.get('FLASK_DATABASE_HOST'),
         DATABASE_USER=os.environ.get('FLASK_DATABASE_USER'),
         DATABASE_PASSWORD=os.environ.get('FLASK_DATABASE_PASSWORD'),
-        DATABASE=os.environ.get('FLASK_DATABASE')
-        
+        DATABASE=os.environ.get('FLASK_DATABASE'),
+        DATABASE_PORT=os.environ.get('FLASK_DATABASE_PORT')
     )
 
 

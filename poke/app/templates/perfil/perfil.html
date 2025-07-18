@@ -105,7 +105,7 @@
         {% if imagen_base64 %}
             <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil" class="profile-avatar">
         {% else %}
-            <img src="{{ url_for('static', filename='no_profile.png') }}" class="profile-avatar" title="No hay foto">
+            <img src="{{ url_for('static', filename='sin-perfil.png') }}" class="profile-avatar" title="No hay foto">
         {% endif %}
         <div class="profile-name">{{ nombre_usuario }}{% if apellido_usuario %}, {{ apellido_usuario }}{% endif %}</div>
     </div>
