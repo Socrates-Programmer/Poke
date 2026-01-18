@@ -1,7 +1,15 @@
+.body{
+    font-family: 'Rufina', serif;
+    font-size: 17px;
+}
+
+.posts{
+   box-shadow: 5px 5px 5px rgb(194, 194, 194);
+}
+
 .layout{
-    margin-top:60px;
-    margin-left: 23%;
-    width: 60%;
+    width:70%;
+    padding-left:20%;
 }
 
 .input{
@@ -16,4 +24,89 @@
 
 .label{
     color: rgba(0, 0, 0, 0.504);
+}
+
+.img1{
+ padding-right: 2%;
+}
+
+.imglogo{
+    width: 100px;
+    padding-top: 3%;
+}
+
+#XDD{
+    padding-left: 2%;
+    padding-right:2%;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
+
+.pika{
+
+}
+
+.listapokemones{
+    list-style: none;
+}
+
+.img_noprofile{
+    width:40px;
+}
+
+.all_friends{
+    width: 60px;
+}
+
+.texto_perfil{
+    padding-left:50%;
+}
+
+.img-poke:hover{
+    transform: scale(1.1);
+}
+
+.small-input {
+    width: 200px; /* O el valor que desees */
+}
+
+
+.icons{
+    width: 50px;
+}
+
+.imgnotify{
+    width: 20px;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.btn-notify{
+    width: auto; /* En lugar de un ancho fijo */
+    padding: 5px 10px; /* Ajustar el espacio interno (padding) */
+    font-size: 14px; /* Tamaño de la fuente */
+}
+
+/* Agrega este código a tu archivo CSS o en la etiqueta <style> en tu HTML */
+.custom-toggler-icon {
+    background-color: white; /* Cambia el color de fondo del ícono a blanco */
+    border: none; /* Elimina el borde del ícono */
+  }
+
+  #notify {
+    background-color: white; /* Color de fondo inicial */
+    transition: background-color 0.6s ease; /* Agrega la transición a la propiedad background-color */
+    border-radius: 20px;
+    border: 1px solid #4e4e4e; /* Ancho, estilo y color del borde */
+}
+
+#notify:hover {
+    background-color: rgb(191, 191, 191); /* Color de fondo al hacer hover */
+}
+
+.navChat{
+    font-family: 'Handjet', cursive;
+    font-size: 30px;
 }

@@ -5,42 +5,89 @@
 {% endblock %}
 
 {% block head %}
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .login-container {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 500px;
+        }
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .error-message {
+            background: #ffe0e0;
+            color: #d8000c;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .input-group-text {
+            background: #e9ecef;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-primary {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .form-check-label {
+            font-size: 0.95rem;
+        }
+    </style>
 {% endblock %}
 
-
 {% block body %}
-
-
-
-<div class="container">
-    <div class="layout">
-      {% if error %}
-<div class="error-message">  
-        {{error}}
-</div>
- 
-  {% endif %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-title">
+            <i class="fa fa-user-circle"></i> Iniciar Sesión
+        </div>
+        {% if error %}
+        <div class="error-message">
+            <i class="fa fa-exclamation-circle"></i> {{error}}
+        </div>
+        {% endif %}
         <form method="POST">
-            <div class="mb-3 input">
-              <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
-              <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" /required>
-              <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                </div>
+                <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
             </div>
-            <div class="input">
-                <label for="password">Password</label>
-                <input name="password" type="password" class="form-control" id="password" placeholder="Password" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" /required>
-                <label for="" class="label">Por lo menos un numero y una mayucula son requiridos.</label>
-              </div>
-              <div class="mb-3 form-check input">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Verificado</label>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                    <input name="password" type="password" class="form-control" id="password" placeholder="Password" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" required>
+                </div>
+                <div class="form-text">Por lo menos un número y una mayúscula son requeridos.</div>
             </div>
-            <div class="input">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                <label class="form-check-label" for="exampleCheck1">Aceptar Condiciones.</label>
             </div>
-          </form>    
+            <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in-alt"></i> Entrar</button>
+        </form>
     </div>
 </div>
-
 {% endblock %}

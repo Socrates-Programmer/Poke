@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            display: flex;
+            gap: 2.5rem;
+        }
+        .profile-card {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 16px rgba(44,62,80,0.08);
+            padding: 2rem 1.5rem 1.2rem 1.5rem;
+            border: 1px solid #ececec;
+            width: 340px;
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 1rem;
+            object-fit: cover;
+            background: #f6f6f6;
+            border: 2px solid #3b4cca;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 16px rgba(44,62,80,0.10);
+            transition: transform 0.2s;
+        }
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 0.2rem;
+        }
+        .profile-form-card {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 16px rgba(44,62,80,0.08);
+            padding: 2rem 1.5rem 1.2rem 1.5rem;
+            border: 1px solid #ececec;
+            flex: 1;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #222;
+        }
+        .form-control {
+            background: #f9f9f9;
+            color: #222;
+            border: 1px solid #e0e0e0;
+            font-size: 1.08rem;
+            padding: 0.7rem 1rem;
+            border-radius: 0.7rem;
+        }
+        .form-control:focus {
+            background: #fff;
+            color: #222;
+            border-color: #bdbdbd;
+            box-shadow: 0 0 0 2px #e0e0e0;
+        }
+        .btn-primary {
+            font-size: 1.08rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 0.7rem;
+            background: #3b4cca;
+            border: none;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #e3350d;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #f5c6cb;
+        }
+        .form-text {
+            color: #888;
+        }
+    </style>
+{% endblock %}
+
+
+
+{% block body %}
+
+<div class="profile-container">
+    <div class="profile-card">
+        <h2 style="font-weight:600; color:#222; margin-bottom:1.2rem;">Perfil</h2>
+        {% if imagen_base64 %}
+            <img src="data:image/jpeg;base64,{{ imagen_base64 }}" alt="Imagen de perfil" class="profile-avatar">
+        {% else %}
+            <img src="{{ url_for('static', filename='sin-perfil.png') }}" class="profile-avatar" title="No hay foto">
+        {% endif %}
+        <div class="profile-name">{{ nombre_usuario }}{% if apellido_usuario %}, {{ apellido_usuario }}{% endif %}</div>
+    </div>
+    <div class="profile-form-card">
+        {% if error %}
+            <div class="error-message">{{error}}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('perfil.upload') }}" enctype="multipart/form-data" style="margin-bottom:2rem;">
+            <label for="formFile" class="form-label">Cambiar Imagen</label>
+            <input class="form-control" name="file" type="file" id="file">
+            <input type="submit" class="btn btn-primary" value="Cambiar">
+        </form>
+        <form method="POST" action="{{ url_for('perfil.perfil') }}" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="new_name" class="form-label">Nombre</label>
+                <input type="text" name="new_name" class="form-control" id="new_name" pattern="[A-Za-z\s]+" >
+                <div class="form-text">Escribe un nuevo nombre.</div>
+            </div>
+            <div class="mb-3">
+                <label for="new_lastname" class="form-label">Apellido</label>
+                <input type="text" name="new_lastname" class="form-control" id="new_lastname" pattern="[A-Za-z\s]+">
+                <div class="form-text">Escribe un nuevo Apellido.</div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Cambiar">
+        </form>
+    </div>
+</div>
+{% endblock %}

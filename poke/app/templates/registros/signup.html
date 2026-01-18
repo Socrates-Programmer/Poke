@@ -5,52 +5,165 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .signup-card {
+            background: #fff;
+            padding: 3rem 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 32px rgba(44,62,80,0.08);
+            width: 100%;
+            max-width: 700px;
+            color: #222;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+        .signup-title {
+            font-size: 2.1rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .signup-title img {
+            width: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
+            opacity: 0.7;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #f5c6cb;
+        }
+        .input-group-text {
+            background: #f6f6f6;
+            color: #888;
+            border: none;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #222;
+        }
+        .form-control {
+            background: #f9f9f9;
+            color: #222;
+            border: 1px solid #e0e0e0;
+            font-size: 1.08rem;
+            padding: 0.7rem 1rem;
+        }
+        .form-control:focus {
+            background: #fff;
+            color: #222;
+            border-color: #bdbdbd;
+            box-shadow: 0 0 0 2px #e0e0e0;
+        }
+        .btn-primary {
+            width: 100%;
+            font-size: 1.08rem;
+            padding: 0.8rem;
+            border-radius: 0.7rem;
+            background: #3b4cca;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px #0001;
+            color: #fff;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #e3350d;
+        }
+        .form-check-label {
+            font-size: 0.98rem;
+            color: #222;
+        }
+        .form-text, .label {
+            color: #888;
+        }
+        .pokeball {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 70px;
+            opacity: 0.08;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-
-<div class="container">
-<div class="layout">
+<div class="signup-container">
+    <div class="signup-card">
+        <div class="signup-title">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="Pokeball" />
+            ¡Únete a la Red Social Pokémon!
+        </div>
+        <img class="pokeball" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="Pokeball" />
         {% if error %}
-<div class="error-message">  
-        {{error}}
-</div>
- 
-  {% endif %}
-<form class="input" method = 'POST'>
-<div class="">
-      <div class="input">
-          <label for="name">Name</label>
-          <input name="name"type="text" class="form-control" id="name" placeholder="Name" maxlength="85" pattern="[A-Za-z\s]+" /required>
-          <label for="" class="label">No se permiten caracteres espaciales</label>
-
-        </div>    
-      <div class="input">
-        <label for="last">Last Name</label>
-        <input name="lastname" type="text" class="form-control" id="last" placeholder="Last Name" maxlength="36" pattern="[A-Za-z\s]+" /required>
-        <label for="" class="label">No se permiten caracteres espaciales</label>
-
-      </div>    
-      <div class="input">
-        <label for="email">Email</label>
-        <input name="email" type="email" class="form-control" id="email" placeholder="Email" maxlength="90" /required>
-        <label for="" class="label">Recuerde poner un Email valido, Ejem: Example@gmail.com</label>
-
-      </div>
-      <div class="input">
-        <label for="password">Password</label>
-        <input name="password" type="password" class="form-control" id="password" placeholder="Password" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" /required>
-        <label for="" class="label">Por lo menos un numero y una mayucula son requiridos.</label>
-      </div>
-  </div>
-    <div class="form-group input">
+        <div class="error-message">
+            <i class="fa fa-exclamation-circle"></i> {{error}}
+        </div>
+        {% endif %}
+        <form method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre de Entrenador Pokémon</label>
+                <div class="input-group">
+                    <span class="input-group-text"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" style="width:24px;" alt="pikachu" /></span>
+                    <input name="name" type="text" class="form-control" id="name" placeholder="Ash, Misty, Red..." maxlength="85" pattern="[A-Za-z\s]+" title="No se permiten caracteres especiales. Solo se permiten letras y espacios." required>
+                </div>
+                <div class="form-text">Elige tu nombre de entrenador. No se permiten caracteres especiales.</div>
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Apellido</label>
+                <div class="input-group">
+                    <span class="input-group-text"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" style="width:24px;" alt="bulbasaur" /></span>
+                    <input name="lastname" type="text" class="form-control" id="lastname" placeholder="Ketchum, Waterflower..." maxlength="36" pattern="[A-Za-z\s]+" title="No se permiten caracteres especiales. Solo se permiten letras y espacios." required>
+                </div>
+                <div class="form-text">Tu apellido de entrenador Pokémon.</div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" style="width:24px;" alt="squirtle" /></span>
+                    <input name="email" type="email" class="form-control" id="email" placeholder="Correo electrónico" maxlength="90" title="Recuerde poner un correo válido, Ejem: Example@gmail.com" required>
+                </div>
+                <div class="form-text">Recuerda poner un correo válido, Ejem: example@poke.com</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" style="width:24px;" alt="charmander" /></span>
+                    <input name="password" type="password" class="form-control" id="password" placeholder="Contraseña" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" required>
+                </div>
+                <div class="form-text">Por lo menos un número y una mayúscula son requeridos.</div>
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" style="width:24px;" alt="mewtwo" /></span>
+                    <input name="confirm_password" type="password" class="form-control" id="confirm_password" placeholder="Confirmar Contraseña" minlength="8" pattern="^(?=.*[A-Z])(?=.*\d).*$" required>
+                </div>
+                <div class="form-text">Por favor, confirma tu contraseña.</div>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                <label class="form-check-label" for="exampleCheck1">Acepto ser parte de la comunidad Pokémon y las condiciones.</label>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> ¡Registrarme como Entrenador!</button>
+        </form>
     </div>
-    <div class="input">
-        <button type="submit" class="btn btn-primary">Sign in</button>
-    </div>
-</form>
-    
-</div>
 </div>
 {% endblock %}
 

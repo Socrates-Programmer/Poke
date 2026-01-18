@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Friends
+{% endblock %}
+
+{% block head %}
+    <style>
+        .friends-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 2rem;
+        }
+        .friend-card {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 16px rgba(44,62,80,0.08);
+            margin-bottom: 2rem;
+            padding: 2rem 1.5rem 1.2rem 1.5rem;
+            border: 1px solid #ececec;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .friend-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f6f6f6;
+            border: 1px solid #e0e0e0;
+        }
+        .friend-info {
+            flex: 1;
+        }
+        .friend-name {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #222;
+            margin-bottom: 0.2rem;
+        }
+        .friend-action {
+            text-align: right;
+        }
+        .btn-warning {
+            font-size: 1rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.7rem;
+            background: #3b4cca;
+            color: #fff;
+            border: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn-warning:hover {
+            background: #e3350d;
+        }
+    </style>
+    <div class="friends-container">
+        <h2 style="text-align:center; font-weight:600; margin-bottom:2rem; color:#222;">Personas registradas</h2>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+<div class="friends-container">
+    {% for user in friends %}
+    <div class="friend-card">
+        {% if imagen_users_base64[loop.index0] %}
+            <img src="data:image/jpeg;base64,{{ imagen_users_base64[loop.index0] }}" class="friend-avatar" title="{{ user['name'] }}, {{ user['last_name'] }}">
+        {% else %}
+            <img src="{{ url_for('static', filename='no_profile.png') }}" class="friend-avatar" title="No hay foto">
+        {% endif %}
+        <div class="friend-info">
+            <div class="friend-name">{{ user['name'] }}{% if user['last_name'] %}, {{ user['last_name'] }}{% endif %}</div>
+        </div>
+        <div class="friend-action">
+            <form action="" method="post">
+                <input class="btn btn-warning" type="submit" value="Enviar solicitud">
+                <input type="hidden" name="id_user" value="{{ user['id_user'] }}">
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}
